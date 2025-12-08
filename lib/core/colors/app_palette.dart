@@ -4,6 +4,7 @@ class AppPalette  {
   static const button = Color.fromARGB(255, 255, 196, 95); 
   static const orange = Color(0xFFF99417);
   static const black  = Colors.black;
+  static const black2 = Color.fromARGB(255, 40, 40, 40);
   static const white  = Colors.white;
   static const green  = Colors.green;
   static const red    = Color.fromARGB(255, 255, 103, 92);

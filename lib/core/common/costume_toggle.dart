@@ -1,77 +1,70 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mindmath_ai_calculator/core/colors/app_palette.dart';
 
-class CostumeToggle extends StatefulWidget {
+import '../../src/controller/toggle_cubit.dart';
+
+class CostumeToggle extends StatelessWidget {
   const CostumeToggle({super.key});
 
-  @override
-  State<CostumeToggle> createState() => _CostumeToggleState();
-}
+  final animationDuration = const Duration(milliseconds: 400);
 
-class _CostumeToggleState extends State<CostumeToggle> {
-  var isEnabled = false;
-  final animationDuration = Duration(milliseconds: 400);
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        setState(() {
-          isEnabled = !isEnabled;
-        });
+        context.read<ToggleCubit>().toggle();
       },
-      child: AnimatedContainer(
-        duration: animationDuration,
-        height: 40,
-        width: 70,
-        decoration: BoxDecoration(
-          color: Color(0xff989fd5),
-          borderRadius: BorderRadius.circular(30),
-          border: Border.all(color: AppPalette.white, width: 2),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.shade400,
-              spreadRadius: 2,
-              blurRadius: 10,
+      child: BlocBuilder<ToggleCubit, bool>(
+        builder: (context, isEnabled) {
+          return AnimatedContainer(
+            duration: animationDuration,
+            height: 30,
+            width: 65,
+            decoration: BoxDecoration(
+              color: isEnabled
+                  ? AppPalette.black2.withValues(alpha: 0.6)
+                  : AppPalette.hint,
+              borderRadius: BorderRadius.circular(40),
             ),
-          ],
-        ),
-        child: Stack(
-          alignment: .center,
-
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            child: Stack(
+              alignment: Alignment.center,
               children: [
-                Padding(
-                  padding: .only(left: 8),
-                  child: Icon(Icons.dark_mode, size: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Padding(
+                      padding: EdgeInsets.only(left: 10),
+                      child: Icon(Icons.dark_mode, size: 20),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(right: 9),
+                      child: Icon(Icons.light_mode, size: 20),
+                    ),
+                  ],
                 ),
-                Padding(
-                  padding: .only(right: 8),
-                  child: Icon(Icons.light_mode, size: 20),
+                AnimatedAlign(
+                  alignment: isEnabled
+                      ? Alignment.centerRight
+                      : Alignment.centerLeft,
+                  duration: animationDuration,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 2),
+                    child: AnimatedContainer(
+                      duration: animationDuration,
+                      width: 28,
+                      height: 28,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: isEnabled ? AppPalette.black2 : AppPalette.white,
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),
-            AnimatedAlign(
-              alignment: isEnabled
-                  ? Alignment.centerRight
-                  : Alignment.centerLeft,
-              duration: animationDuration,
-              child: Padding(
-                padding: .symmetric(horizontal: 2),
-                child: AnimatedContainer(
-                  duration: animationDuration,
-                  width: 30,
-                  height: 30,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
