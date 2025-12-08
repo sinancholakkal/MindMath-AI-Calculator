@@ -1,4 +1,4 @@
-package com.example.mindmath_ai_calculator
+package com.mathai.calculator
 
 import io.flutter.embedding.android.FlutterActivity
 
