@@ -9,7 +9,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: MyHomePage());
+    return MaterialApp(
+      home: MyHomePage(),
+      theme: ThemeData(fontFamily: 'Outfit'),
+    );
   }
 }
 
@@ -19,7 +22,7 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Abhiram')),
+      appBar: AppBar(title: Text('Abhiramm')),
       body: Center(child: Text("INITIAL COMMITS")),
     );
   }
