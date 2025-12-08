@@ -20,13 +20,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Math Ai : Calculator',
-        theme: AppTheme.lightTheme,
-        darkTheme: AppTheme.darkTheme,
-        themeMode: ThemeMode.system,
-        initialRoute: '/',
-        onGenerateRoute: AppRoutes.onGenerateRoute,
-      );
+      debugShowCheckedModeBanner: false,
+      title: 'Math Ai : Calculator',
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: ThemeMode.system,
+      initialRoute: '/',
+      onGenerateRoute: AppRoutes.onGenerateRoute,
+    );
   }
 }
