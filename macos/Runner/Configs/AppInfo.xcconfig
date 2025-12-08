@@ -8,7 +8,7 @@
 PRODUCT_NAME = mindmath_ai_calculator
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.example.mindmathAiCalculator
+PRODUCT_BUNDLE_IDENTIFIER = com.mathai.calculator
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2025 com.example. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2025 com.mathai. All rights reserved.
