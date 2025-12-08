@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
       title: 'Math Ai : Calculator',
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.system,
+      themeMode: ThemeMode.dark,
       initialRoute: '/',
       onGenerateRoute: AppRoutes.onGenerateRoute,
     );

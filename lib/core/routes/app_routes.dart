@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mindmath_ai_calculator/src/view/splash_screen.dart';
+import 'package:mindmath_ai_calculator/src/view/home_screen.dart';
 
 class AppRoutes {
   static const String splash = '/';
@@ -8,7 +8,7 @@ class AppRoutes {
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case splash:
-        return MaterialPageRoute(builder: (_) => const SplashScreen());
+        return MaterialPageRoute(builder: (_) => const HomeScreen());
       default:
         return MaterialPageRoute(
           builder: (_) => LayoutBuilder(
