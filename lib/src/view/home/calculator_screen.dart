@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mindmath_ai_calculator/core/colors/app_palette.dart';
 import 'package:mindmath_ai_calculator/src/controller/bloc/arithmetical/arithmetical_bloc.dart';
 import 'package:mindmath_ai_calculator/src/view/home/widgets/calc_button.dart';
 
@@ -51,7 +50,6 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    //Main input and result
                     Container(
                       width: double.infinity,
                       alignment: Alignment.centerRight,
