@@ -11,5 +11,7 @@ class AppPalette  {
   static const grey   = Colors.grey;
   static const blue   = Color.fromARGB(255, 39, 134, 211);
   static const hint   = Color.fromARGB(255, 223, 225, 227);
+  static const white2 = Color.fromARGB(255, 244, 244, 244);
   static const trasprent  = Colors.transparent;
+  static  Color grey800 =  Colors.grey[800] ?? AppPalette.grey;
 }

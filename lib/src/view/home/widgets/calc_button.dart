@@ -25,9 +25,9 @@ class CalcButton extends StatelessWidget {
     return BlocBuilder<ToggleCubit, bool>(
       builder: (context, isEnabled) {
         return Container(
-          margin: const .all(5.0),
+          margin: const .all(2.0),
           child: Material(
-            color: isEnabled ? isWhite : isBlack,
+            color: isEnabled ? isBlack : isWhite,
             borderRadius: .circular(20.0),
             child: InkWell(
               onTap: onTap,
@@ -36,13 +36,14 @@ class CalcButton extends StatelessWidget {
                 alignment: Alignment.center,
                 child: iconData != null
                     ? Center(
-                      child: Icon(
+                        child: Icon(
                           iconData,
-                          color: isEnabled ? AppPalette.white : AppPalette.black,
+                          color: isEnabled
+                              ? AppPalette.white
+                              : AppPalette.black,
                           size: 32,
-                          
                         ),
-                    )
+                      )
                     : Text(
                         text ?? '',
                         style: TextStyle(
@@ -50,7 +51,7 @@ class CalcButton extends StatelessWidget {
                               ? AppPalette.white
                               : AppPalette.black,
                           fontSize: 32,
-                    fontWeight: .w900,
+                          fontWeight: .w900,
                         ),
                       ),
               ),
