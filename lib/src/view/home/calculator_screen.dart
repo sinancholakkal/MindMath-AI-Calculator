@@ -69,13 +69,28 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                               },
 
                               builder: (context, state) {
-                                return Text(
-                                  mainInputController.text.isEmpty
-                                      ? "0"
-                                      : mainInputController.text,
+                                double size = 64;
+                                if (state is ResultState) {
+                                  size = 24;
+                                }
+                                if (state is ContinueState) {
+                                  size = 64;
+                                }
+                                return AnimatedDefaultTextStyle(
+                                  duration: const Duration(milliseconds: 200),
                                   style: TextStyle(
-                                    fontSize: state is ResultState ? 24 : 64,
+                                    fontSize: size,
                                     fontWeight: FontWeight.w400,
+                                    color:
+                                        Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? Colors.white
+                                        : Colors.black,
+                                  ),
+                                  child: Text(
+                                    mainInputController.text.isEmpty
+                                        ? "0"
+                                        : mainInputController.text,
                                   ),
                                 );
                               },
@@ -86,18 +101,29 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                     //Instand result
                     BlocBuilder<ArithmeticalBloc, ArithmeticalState>(
                       builder: (context, state) {
-                        String result = state is ListenerState
-                            ? state.result
-                            : "";
-                        if (state is ResultState) {
+                        double size = 24;
+                        String result = "";
+                        if (state is ListenerState) {
+                          size = 24;
                           result = state.result;
                         }
-                        return Text(
-                          result,
+
+                        if (state is ResultState) {
+                          size = 64;
+                          result = state.result;
+                        }
+                        return AnimatedDefaultTextStyle(
+                          duration: const Duration(milliseconds: 200),
                           style: TextStyle(
-                            fontSize: state is ResultState ? 64 : 24,
+                            fontSize: size,
                             fontWeight: FontWeight.w400,
+                            color:
+                                Theme.of(context).brightness == Brightness.dark
+                                ? Colors.white
+                                : Colors.black,
                           ),
+
+                          child: Text(result),
                         );
                       },
                     ),
