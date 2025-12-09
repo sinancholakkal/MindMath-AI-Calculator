@@ -1,11 +1,43 @@
+import 'dart:developer';
+
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:math_expressions/math_expressions.dart';
 import 'package:mindmath_ai_calculator/core/colors/app_palette.dart';
+import 'package:mindmath_ai_calculator/src/controller/bloc/arithmetical/arithmetical_bloc.dart';
 import 'package:mindmath_ai_calculator/src/view/home/widgets/calc_button.dart';
 
 import '../../../core/common/costume_toggle.dart';
 
-class CalculatorScreen extends StatelessWidget {
+class CalculatorScreen extends StatefulWidget {
   const CalculatorScreen({super.key});
+
+  @override
+  State<CalculatorScreen> createState() => _CalculatorScreenState();
+}
+
+class _CalculatorScreenState extends State<CalculatorScreen> {
+  late TextEditingController mainInputController;
+  late ScrollController mainInputScrollController;
+  @override
+  void initState() {
+    super.initState();
+    mainInputScrollController = ScrollController();
+    mainInputController = TextEditingController();
+    mainInputController.addListener(() {
+      context.read<ArithmeticalBloc>().add(
+        ArithmeticalListenerEvent(expression: mainInputController.text),
+      );
+    });
+  }
+
+  @override
+  void dispose() {
+    mainInputController.dispose();
+    mainInputScrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,27 +47,61 @@ class CalculatorScreen extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 14.0),
           child: Column(
             children: [
+              CostumeToggle(),
               Expanded(
-                child: const Column(
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    CostumeToggle(),
-                    Text(
-                      '6,291÷5',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w400,
+                    //Main input and result
+                    Container(
+                      width: double.infinity,
+                      alignment: Alignment.centerRight,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        reverse: true,
+                        child:
+                            BlocConsumer<ArithmeticalBloc, ArithmeticalState>(
+                              listener: (context, state) {
+                                if (state is ContinueState) {
+                                  mainInputController.text = state.mainInput;
+                                }
+                              },
+
+                              builder: (context, state) {
+                                return Text(
+                                  mainInputController.text.isEmpty
+                                      ? "0"
+                                      : mainInputController.text,
+                                  style: TextStyle(
+                                    fontSize: state is ResultState ? 24 : 64,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                );
+                              },
+                            ),
                       ),
                     ),
                     SizedBox(height: 10),
-                    Text(
-                      '1,258.2',
-                      style: TextStyle(
-                        fontSize: 64,
-                        fontWeight: FontWeight.w400,
-                      ),
+                    //Instand result
+                    BlocBuilder<ArithmeticalBloc, ArithmeticalState>(
+                      builder: (context, state) {
+                        String result = state is ListenerState
+                            ? state.result
+                            : "";
+                        if (state is ResultState) {
+                          result = state.result;
+                        }
+                        return Text(
+                          result,
+                          style: TextStyle(
+                            fontSize: state is ResultState ? 64 : 24,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        );
+                      },
                     ),
+
                     SizedBox(height: 20),
                   ],
                 ),
@@ -45,7 +111,7 @@ class CalculatorScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     _buildButtonRow(
-                      ['AC', Icons.mic_sharp, Icons.percent, '÷'],
+                      ['AC', Icons.mic_sharp, "%", '÷'],
                       [
                         Colors.grey[800]!,
                         Colors.grey[800]!,
@@ -143,7 +209,12 @@ class CalculatorScreen extends StatelessWidget {
               iconData: data[index] is IconData ? data[index] : null,
               isBlack: isBlack[index],
               isWhite: isWhite[index],
-              onTap: () {},
+              onTap: () {
+                log(data[index].toString());
+                context.read<ArithmeticalBloc>().add(
+                  ArithmeticalTapEvent(expression: data[index]),
+                );
+              },
             ),
           );
         }),
