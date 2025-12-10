@@ -1,6 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mindmath_ai_calculator/core/colors/app_palette.dart';
+import 'package:mindmath_ai_calculator/src/controller/bloc/image_pick/image_pick_bloc.dart';
+import 'package:mindmath_ai_calculator/src/view/recognition_screen/recognition_screen.dart';
 
 import '../../src/controller/cubit/toggile_cubit/toggle_cubit.dart';
 
@@ -86,10 +90,16 @@ class CostumeToggle extends StatelessWidget {
                 borderRadius: .circular(40),
               ),
               child: Center(
-                child: Icon(
-                  Icons.document_scanner,
-                  size: 18,
-                  color: isEnabled ? AppPalette.white : AppPalette.black2,
+                child: IconButton(
+                  onPressed: () {
+                    context.read<ImagePickBloc>().add(ImagePickerEvent());
+                    log("Bloc called");
+                  },
+                  icon: Icon(
+                    Icons.document_scanner,
+                    size: 18,
+                    color: isEnabled ? AppPalette.white : AppPalette.black2,
+                  ),
                 ),
               ),
             );

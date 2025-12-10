@@ -1,8 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mindmath_ai_calculator/src/controller/bloc/arithmetical/arithmetical_bloc.dart';
+import 'package:mindmath_ai_calculator/src/controller/bloc/image_pick/image_pick_bloc.dart';
 import 'package:mindmath_ai_calculator/src/view/home/widgets/calc_button.dart';
+import 'package:mindmath_ai_calculator/src/view/recognition_screen/recognition_screen.dart';
 
 import '../../../core/common/costume_toggle.dart';
 import '../../controller/cubit/speech_cubit/speech_cubit.dart';
@@ -39,130 +40,155 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 19.0),
-          child: Column(
-            children: [
-              CostumeToggle(),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    BlocListener<SpeechCubit, SpeechState>(
-                      listener: (context, speechState) {
-                        if (speechState.isListening) {
-                          mainInputController.text = speechState.recognizedText;
+    return BlocListener<ImagePickBloc, ImagePickState>(
+      listener: (context, state) async {
+        if (state is ImagePickLoaded) {
+          mainInputController.text = await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  RecognitionScreen(image: state.image, numbers: state.numbers),
+            ),
+          );
+        }
+      },
+      child: Scaffold(
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 14.0,
+              vertical: 19.0,
+            ),
+            child: Column(
+              children: [
+                CostumeToggle(),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      BlocListener<SpeechCubit, SpeechState>(
+                        listener: (context, speechState) {
+                          if (speechState.isListening) {
+                            mainInputController.text =
+                                speechState.recognizedText;
 
-                          mainInputController.selection =
-                              TextSelection.fromPosition(
-                                TextPosition(
-                                  offset: mainInputController.text.length,
+                            mainInputController.selection =
+                                TextSelection.fromPosition(
+                                  TextPosition(
+                                    offset: mainInputController.text.length,
+                                  ),
+                                );
+                          }
+                        },
+                        child: Container(
+                          width: double.infinity,
+                          alignment: Alignment.centerRight,
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            reverse: true,
+                            child:
+                                BlocConsumer<
+                                  ArithmeticalBloc,
+                                  ArithmeticalState
+                                >(
+                                  listener: (context, state) {
+                                    if (state is ContinueState) {
+                                      mainInputController.text =
+                                          state.mainInput;
+                                    }
+                                  },
+
+                                  builder: (context, state) {
+                                    double size = 64;
+                                    if (state is ResultState) {
+                                      size = 24;
+                                    }
+                                    if (state is ContinueState) {
+                                      size = 64;
+                                    }
+                                    return AnimatedDefaultTextStyle(
+                                      duration: const Duration(
+                                        milliseconds: 200,
+                                      ),
+                                      style: TextStyle(
+                                        fontSize: size,
+                                        fontWeight: FontWeight.w400,
+                                        color:
+                                            Theme.of(context).brightness ==
+                                                Brightness.dark
+                                            ? Colors.white
+                                            : Colors.black,
+                                      ),
+                                      child: Text(
+                                        mainInputController.text.isEmpty
+                                            ? "0"
+                                            : mainInputController.text,
+                                      ),
+                                    );
+                                  },
                                 ),
-                              );
-                        }
-                      },
-                      child: Container(
-                        width: double.infinity,
-                        alignment: Alignment.centerRight,
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          reverse: true,
-                          child:
-                              BlocConsumer<ArithmeticalBloc, ArithmeticalState>(
-                                listener: (context, state) {
-                                  if (state is ContinueState) {
-                                    mainInputController.text = state.mainInput;
-                                  }
-                                },
-
-                                builder: (context, state) {
-                                  double size = 64;
-                                  if (state is ResultState) {
-                                    size = 24;
-                                  }
-                                  if (state is ContinueState) {
-                                    size = 64;
-                                  }
-                                  return AnimatedDefaultTextStyle(
-                                    duration: const Duration(milliseconds: 200),
-                                    style: TextStyle(
-                                      fontSize: size,
-                                      fontWeight: FontWeight.w400,
-                                      color:
-                                          Theme.of(context).brightness ==
-                                              Brightness.dark
-                                          ? Colors.white
-                                          : Colors.black,
-                                    ),
-                                    child: Text(
-                                      mainInputController.text.isEmpty
-                                          ? "0"
-                                          : mainInputController.text,
-                                    ),
-                                  );
-                                },
-                              ),
+                          ),
                         ),
                       ),
-                    ),
-                    SizedBox(height: 10),
-                    //Instand result
-                    BlocBuilder<ArithmeticalBloc, ArithmeticalState>(
-                      builder: (context, state) {
-                        double size = 24;
-                        String result = "";
-                        if (state is ListenerState) {
-                          size = 24;
-                          result = state.result;
-                        }
+                      SizedBox(height: 10),
+                      //Instand result
+                      BlocBuilder<ArithmeticalBloc, ArithmeticalState>(
+                        builder: (context, state) {
+                          double size = 24;
+                          String result = "";
+                          if (state is ListenerState) {
+                            size = 24;
+                            result = state.result;
+                          }
 
-                        if (state is ResultState) {
-                          size = 64;
-                          result = state.result;
-                        }
-                        return AnimatedDefaultTextStyle(
-                          duration: const Duration(milliseconds: 200),
-                          style: TextStyle(
-                            fontSize: size,
-                            fontWeight: FontWeight.w400,
-                            color:
-                                Theme.of(context).brightness == Brightness.dark
-                                ? Colors.white
-                                : Colors.black,
-                          ),
+                          if (state is ResultState) {
+                            size = 64;
+                            result = state.result;
+                          }
+                          return AnimatedDefaultTextStyle(
+                            duration: const Duration(milliseconds: 200),
+                            style: TextStyle(
+                              fontSize: size,
+                              fontWeight: FontWeight.w400,
+                              color:
+                                  Theme.of(context).brightness ==
+                                      Brightness.dark
+                                  ? Colors.white
+                                  : Colors.black,
+                            ),
 
-                          child: Text(result),
-                        );
-                      },
-                    ),
+                            child: Text(result),
+                          );
+                        },
+                      ),
 
-                    SizedBox(height: 20),
-                  ],
-                ),
-              ),
-              Expanded(
-                flex: 2,
-                child: GridView.builder(
-                  itemCount: calcData.length,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 4,
-                    childAspectRatio: 1.0,
+                      SizedBox(height: 20),
+                    ],
                   ),
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    final item = calcData[index];
-                    return _buildCalcItem(
-                      data: item["value"],
-                      isWhite: item["white"],
-                      isBlack: item["black"],
-                    );
-                  },
                 ),
-              ),
-            ],
+                Expanded(
+                  flex: 2,
+                  child: GridView.builder(
+                    itemCount: calcData.length,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 4,
+                          childAspectRatio: 1.0,
+                        ),
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      final item = calcData[index];
+                      return _buildCalcItem(
+                        data: item["value"],
+                        isWhite: item["white"],
+                        isBlack: item["black"],
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -213,7 +239,10 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         }
 
         context.read<ArithmeticalBloc>().add(
-          ArithmeticalTapEvent(expression: data),
+          ArithmeticalTapEvent(
+            expression: data,
+            mainInput: mainInputController.text,
+          ),
         );
       },
     );
