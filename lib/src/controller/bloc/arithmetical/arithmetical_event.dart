@@ -5,7 +5,8 @@ sealed class ArithmeticalEvent {}
 
 final class ArithmeticalTapEvent extends ArithmeticalEvent {
   final dynamic expression;
-  ArithmeticalTapEvent({required this.expression});
+  final String mainInput;
+  ArithmeticalTapEvent({required this.expression, required this.mainInput});
 }
 
 class ArithmeticalListenerEvent extends ArithmeticalEvent {

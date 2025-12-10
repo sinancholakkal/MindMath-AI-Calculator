@@ -39,7 +39,10 @@ class ArithmeticalBloc extends Bloc<ArithmeticalEvent, ArithmeticalState> {
         allInput = allInput.substring(0, allInput.length - 1);
         emit(ContinueState(mainInput: allInput));
       } else if (data == '=') {
-        double result = calCulateResult(allInput);
+        log(allInput.toString());
+        log(event.mainInput.toString());
+        double result = calCulateResult(event.mainInput);
+
         allInput = result.toString();
         emit(ResultState(result: allInput));
       }

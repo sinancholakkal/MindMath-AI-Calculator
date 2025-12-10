@@ -7,7 +7,8 @@ final class ImagePickInitial extends ImagePickState {}
 
 class ImagePickLoaded extends ImagePickState {
   final XFile image;
-  ImagePickLoaded({required this.image});
+  final List<num> numbers;
+  ImagePickLoaded({required this.image, required this.numbers});
 }
 
 class ImagePickError extends ImagePickState {
