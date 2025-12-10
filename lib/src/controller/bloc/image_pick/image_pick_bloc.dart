@@ -37,6 +37,7 @@ class ImagePickBloc extends Bloc<ImagePickEvent, ImagePickState> {
 
           for (TextLine line in block.lines) {
             for (TextElement element in line.elements) {
+              print(element.text);
               num? n = num.tryParse(element.text.trim());
               if (n != null) {
                 numbers.add(n);

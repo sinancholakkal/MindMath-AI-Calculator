@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mindmath_ai_calculator/core/routes/app_routes.dart';
 import 'package:mindmath_ai_calculator/src/controller/bloc/arithmetical/arithmetical_bloc.dart';
+import 'package:mindmath_ai_calculator/src/controller/bloc/cubit/select_operation_cubit.dart';
 import 'package:mindmath_ai_calculator/src/controller/bloc/image_pick/image_pick_bloc.dart';
 import 'package:mindmath_ai_calculator/src/controller/toggle_cubit.dart';
 
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
             providers: [
               BlocProvider(create: (context) => ArithmeticalBloc()),
               BlocProvider(create: (context) => ImagePickBloc()),
+              BlocProvider(create: (context) => SelectOperationCubit()),
             ],
             child: MaterialApp(
               debugShowCheckedModeBanner: false,
