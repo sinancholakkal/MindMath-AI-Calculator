@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mindmath_ai_calculator/core/routes/app_routes.dart';
 import 'package:mindmath_ai_calculator/src/controller/bloc/arithmetical/arithmetical_bloc.dart';
+import 'package:mindmath_ai_calculator/src/controller/bloc/image_pick/image_pick_bloc.dart';
 import 'package:mindmath_ai_calculator/src/controller/toggle_cubit.dart';
 
 import 'core/themes/app_themes.dart';
@@ -28,7 +29,10 @@ class MyApp extends StatelessWidget {
       child: BlocBuilder<ToggleCubit, bool>(
         builder: (context, state) {
           return MultiBlocProvider(
-            providers: [BlocProvider(create: (context) => ArithmeticalBloc())],
+            providers: [
+              BlocProvider(create: (context) => ArithmeticalBloc()),
+              BlocProvider(create: (context) => ImagePickBloc()),
+            ],
             child: MaterialApp(
               debugShowCheckedModeBanner: false,
               title: 'Math Ai : Calculator',

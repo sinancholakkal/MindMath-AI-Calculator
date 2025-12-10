@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:math_expressions/math_expressions.dart';
-import 'package:meta/meta.dart';
 
 part 'arithmetical_event.dart';
 part 'arithmetical_state.dart';

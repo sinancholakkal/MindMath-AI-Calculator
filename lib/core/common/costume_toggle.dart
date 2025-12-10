@@ -1,6 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mindmath_ai_calculator/core/colors/app_palette.dart';
+import 'package:mindmath_ai_calculator/src/controller/bloc/image_pick/image_pick_bloc.dart';
+import 'package:mindmath_ai_calculator/src/view/recognition_screen/recognition_screen.dart';
 
 import '../../src/controller/toggle_cubit.dart';
 
@@ -11,91 +15,109 @@ class CostumeToggle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: .center,
-      crossAxisAlignment: .center,
-      children: [
-        GestureDetector(
-          onTap: () {
-            context.read<ToggleCubit>().toggle();
-          },
-          child: BlocBuilder<ToggleCubit, bool>(
+    return BlocListener<ImagePickBloc, ImagePickState>(
+      listener: (context, state) {
+        if (state is ImagePickLoaded) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => RecognitionScreen(image: state.image),
+            ),
+          );
+        }
+      },
+      child: Row(
+        mainAxisAlignment: .center,
+        crossAxisAlignment: .center,
+        children: [
+          GestureDetector(
+            onTap: () {
+              context.read<ToggleCubit>().toggle();
+            },
+            child: BlocBuilder<ToggleCubit, bool>(
+              builder: (context, isEnabled) {
+                return AnimatedContainer(
+                  duration: animationDuration,
+                  height: 30,
+                  width: 65,
+                  decoration: BoxDecoration(
+                    color: isEnabled
+                        ? AppPalette.black2.withValues(alpha: 0.6)
+                        : AppPalette.hint,
+                    borderRadius: .circular(40),
+                  ),
+                  child: Stack(
+                    alignment: .center,
+                    children: [
+                      Row(
+                        mainAxisAlignment: .center,
+                        children: const [
+                          Padding(
+                            padding: .only(left: 10),
+                            child: Icon(Icons.dark_mode, size: 20),
+                          ),
+                          Padding(
+                            padding: .only(right: 9),
+                            child: Icon(Icons.light_mode, size: 20),
+                          ),
+                        ],
+                      ),
+                      AnimatedAlign(
+                        alignment: isEnabled
+                            ? Alignment.centerRight
+                            : Alignment.centerLeft,
+                        duration: animationDuration,
+                        child: Padding(
+                          padding: .symmetric(horizontal: 2),
+                          child: AnimatedContainer(
+                            duration: animationDuration,
+                            width: 28,
+                            height: 28,
+                            decoration: BoxDecoration(
+                              shape: .circle,
+                              color: isEnabled
+                                  ? AppPalette.black2
+                                  : AppPalette.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+          const SizedBox(width: 10),
+          BlocBuilder<ToggleCubit, bool>(
             builder: (context, isEnabled) {
-              return AnimatedContainer(
-                duration: animationDuration,
+              return Container(
                 height: 30,
-                width: 65,
+                width: 30,
                 decoration: BoxDecoration(
                   color: isEnabled
                       ? AppPalette.black2.withValues(alpha: 0.6)
                       : AppPalette.hint,
                   borderRadius: .circular(40),
                 ),
-                child: Stack(
-                  alignment: .center,
-                  children: [
-                    Row(
-                      mainAxisAlignment: .center,
-                      children: const [
-                        Padding(
-                          padding: .only(left: 10),
-                          child: Icon(Icons.dark_mode, size: 20),
-                        ),
-                        Padding(
-                          padding: .only(right: 9),
-                          child: Icon(Icons.light_mode, size: 20),
-                        ),
-                      ],
+                child: Center(
+                  child: IconButton(
+                    onPressed: () {
+                      context.read<ImagePickBloc>().add(ImagePickerEvent());
+                      log("Bloc called");
+                    },
+                    icon: Icon(
+                      Icons.document_scanner,
+                      size: 18,
+                      color: isEnabled ? AppPalette.white : AppPalette.black2,
                     ),
-                    AnimatedAlign(
-                      alignment: isEnabled
-                          ? Alignment.centerRight
-                          : Alignment.centerLeft,
-                      duration: animationDuration,
-                      child: Padding(
-                        padding: .symmetric(horizontal: 2),
-                        child: AnimatedContainer(
-                          duration: animationDuration,
-                          width: 28,
-                          height: 28,
-                          decoration: BoxDecoration(
-                            shape: .circle,
-                            color: isEnabled
-                                ? AppPalette.black2
-                                : AppPalette.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               );
             },
           ),
-        ),
-        const SizedBox(width: 10),
-        BlocBuilder<ToggleCubit, bool>(
-          builder: (context, isEnabled) {
-            return Container(
-              height: 30,
-              width: 30,
-              decoration: BoxDecoration(
-                color: isEnabled
-                    ? AppPalette.black2.withValues(alpha: 0.6)
-                    : AppPalette.hint,
-                borderRadius: .circular(40),
-              ),
-              child: Center(
-                child: Icon(
-                  Icons.document_scanner,
-                  size: 18,
-                  color: isEnabled ? AppPalette.white : AppPalette.black2,
-                ),
-              ),
-            );
-          },
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
