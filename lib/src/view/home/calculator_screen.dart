@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mindmath_ai_calculator/src/controller/bloc/arithmetical/arithmetical_bloc.dart';
@@ -7,6 +6,7 @@ import 'package:mindmath_ai_calculator/src/view/home/widgets/calc_button.dart';
 import 'package:mindmath_ai_calculator/src/view/recognition_screen/recognition_screen.dart';
 
 import '../../../core/common/costume_toggle.dart';
+import '../../controller/cubit/speech_cubit/speech_cubit.dart';
 import 'widgets/calc_datas.dart';
 
 class CalculatorScreen extends StatefulWidget {
@@ -22,7 +22,6 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   @override
   void initState() {
     super.initState();
-    log("Inistate called");
     mainInputScrollController = ScrollController();
     mainInputController = TextEditingController();
     mainInputController.addListener(() {
@@ -68,47 +67,68 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Container(
-                        width: double.infinity,
-                        alignment: Alignment.centerRight,
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          reverse: true,
-                          child:
-                              BlocConsumer<ArithmeticalBloc, ArithmeticalState>(
-                                listener: (context, state) {
-                                  if (state is ContinueState) {
-                                    mainInputController.text = state.mainInput;
-                                  }
-                                },
+                      BlocListener<SpeechCubit, SpeechState>(
+                        listener: (context, speechState) {
+                          if (speechState.isListening) {
+                            mainInputController.text =
+                                speechState.recognizedText;
 
-                                builder: (context, state) {
-                                  double size = 64;
-                                  if (state is ResultState) {
-                                    size = 24;
-                                  }
-                                  if (state is ContinueState) {
-                                    size = 64;
-                                  }
-                                  return AnimatedDefaultTextStyle(
-                                    duration: const Duration(milliseconds: 200),
-                                    style: TextStyle(
-                                      fontSize: size,
-                                      fontWeight: FontWeight.w400,
-                                      color:
-                                          Theme.of(context).brightness ==
-                                              Brightness.dark
-                                          ? Colors.white
-                                          : Colors.black,
-                                    ),
-                                    child: Text(
-                                      mainInputController.text.isEmpty
-                                          ? "0"
-                                          : mainInputController.text,
-                                    ),
-                                  );
-                                },
-                              ),
+                            mainInputController.selection =
+                                TextSelection.fromPosition(
+                                  TextPosition(
+                                    offset: mainInputController.text.length,
+                                  ),
+                                );
+                          }
+                        },
+                        child: Container(
+                          width: double.infinity,
+                          alignment: Alignment.centerRight,
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            reverse: true,
+                            child:
+                                BlocConsumer<
+                                  ArithmeticalBloc,
+                                  ArithmeticalState
+                                >(
+                                  listener: (context, state) {
+                                    if (state is ContinueState) {
+                                      mainInputController.text =
+                                          state.mainInput;
+                                    }
+                                  },
+
+                                  builder: (context, state) {
+                                    double size = 64;
+                                    if (state is ResultState) {
+                                      size = 24;
+                                    }
+                                    if (state is ContinueState) {
+                                      size = 64;
+                                    }
+                                    return AnimatedDefaultTextStyle(
+                                      duration: const Duration(
+                                        milliseconds: 200,
+                                      ),
+                                      style: TextStyle(
+                                        fontSize: size,
+                                        fontWeight: FontWeight.w400,
+                                        color:
+                                            Theme.of(context).brightness ==
+                                                Brightness.dark
+                                            ? Colors.white
+                                            : Colors.black,
+                                      ),
+                                      child: Text(
+                                        mainInputController.text.isEmpty
+                                            ? "0"
+                                            : mainInputController.text,
+                                      ),
+                                    );
+                                  },
+                                ),
+                          ),
                         ),
                       ),
                       SizedBox(height: 10),
@@ -180,13 +200,44 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     required Color isWhite,
     required Color isBlack,
   }) {
+    final speech = context.watch<SpeechCubit>();
+
+    final bool isMic = data == Icons.mic;
+
     return CalcButton(
       text: data is String ? data : null,
-      iconData: data is IconData ? data : null,
-      isBlack: isBlack,
-      isWhite: isWhite,
-      onTap: () {
-        log(data.toString());
+      iconData: isMic
+          ? (speech.state.isListening ? Icons.mic : Icons.mic_off)
+          : data is IconData
+          ? data
+          : null,
+
+      isWhite: isMic
+          ? (speech.state.isListening ? Colors.blue : isWhite)
+          : isWhite,
+
+      isBlack: isMic
+          ? (speech.state.isListening ? Colors.blue : isBlack)
+          : isBlack,
+
+      onTap: () async {
+        if (isMic) {
+          final hasPermission = await speech.checkMicPermission();
+
+          if (!hasPermission) {
+            return;
+          }
+          await speech.init();
+
+          if (!speech.state.isListening) {
+            speech.startListening();
+          } else {
+            speech.stopListening();
+          }
+
+          return;
+        }
+
         context.read<ArithmeticalBloc>().add(
           ArithmeticalTapEvent(
             expression: data,

@@ -6,7 +6,7 @@ import 'package:mindmath_ai_calculator/core/colors/app_palette.dart';
 import 'package:mindmath_ai_calculator/src/controller/bloc/image_pick/image_pick_bloc.dart';
 import 'package:mindmath_ai_calculator/src/view/recognition_screen/recognition_screen.dart';
 
-import '../../src/controller/toggle_cubit.dart';
+import '../../src/controller/cubit/toggile_cubit/toggle_cubit.dart';
 
 class CostumeToggle extends StatelessWidget {
   const CostumeToggle({super.key});
