@@ -44,9 +44,13 @@ class SpeechCubit extends Cubit<SpeechState> {
 
   Future<void> startListening() async {
     await speech.listen(
-      //localeId: localeId,
       onResult: (result) {
-        emit(state.copyWith(recognizedText: result.recognizedWords));
+        String recognized = result.recognizedWords;
+
+        final filtered = RegExp(
+          r'[0-9+\-*/%.()]',
+        ).allMatches(recognized).map((m) => m.group(0)).join();
+        emit(state.copyWith(recognizedText: filtered));
       },
     );
     emit(state.copyWith(isListening: true));
