@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mindmath_ai_calculator/core/colors/app_palette.dart';
 
-import '../../src/controller/toggle_cubit.dart';
+import '../../src/controller/cubit/toggile_cubit/toggle_cubit.dart';
 
 class CostumeToggle extends StatelessWidget {
   const CostumeToggle({super.key});
