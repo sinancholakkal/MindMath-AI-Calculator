@@ -15,7 +15,7 @@ class ImagePickBloc extends Bloc<ImagePickEvent, ImagePickState> {
   ImagePickBloc() : super(ImagePickInitial()) {
     on<ImagePickerEvent>((event, emit) async {
       final ImagePicker picker = ImagePicker();
-      final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+      final XFile? image = await picker.pickImage(source: event.source);
       final List<num> numbers = [];
       if (image != null) {
         final InputImage inputImage = InputImage.fromFile(File(image.path));
@@ -28,16 +28,9 @@ class ImagePickBloc extends Bloc<ImagePickEvent, ImagePickState> {
           inputImage,
         );
 
-        String text = recognizedText.text;
         for (TextBlock block in recognizedText.blocks) {
-          final Rect rect = block.boundingBox;
-          final List<Point<int>> cornerPoints = block.cornerPoints;
-          final String text = block.text;
-          final List<String> languages = block.recognizedLanguages;
-
           for (TextLine line in block.lines) {
             for (TextElement element in line.elements) {
-              print(element.text);
               num? n = num.tryParse(element.text.trim());
               if (n != null) {
                 numbers.add(n);

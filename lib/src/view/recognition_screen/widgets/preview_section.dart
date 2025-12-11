@@ -4,14 +4,9 @@ import 'package:mindmath_ai_calculator/src/controller/bloc/cubit/select_operatio
 import 'package:mindmath_ai_calculator/src/view/recognition_screen/recognition_screen.dart';
 
 class PreviewSection extends StatelessWidget {
-  const PreviewSection({
-    super.key,
-    required this.widget,
-    required String formattedExpression,
-  }) : _formattedExpression = formattedExpression;
+  const PreviewSection({super.key, required this.widget});
 
   final RecognitionScreen widget;
-  final String _formattedExpression;
 
   @override
   Widget build(BuildContext context) {
