@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -27,9 +28,10 @@ class _RecognitionScreenState extends State<RecognitionScreen> {
   final List<String> _operators = ['+', '-', 'x', '/'];
   String result = "";
 
-  String get _formattedExpression {
-    if (widget.numbers.isEmpty) return "";
-    return widget.numbers.join(" $_selectedOperator ");
+  @override
+  void initState() {
+    super.initState();
+    result = widget.numbers.join(" $_selectedOperator ");
   }
 
   @override
@@ -69,10 +71,7 @@ class _RecognitionScreenState extends State<RecognitionScreen> {
                       const SizedBox(height: 24),
 
                       // Preview Section
-                      PreviewSection(
-                        widget: widget,
-                        formattedExpression: _formattedExpression,
-                      ),
+                      PreviewSection(widget: widget),
                       const SizedBox(height: 20),
                     ],
                   ),
