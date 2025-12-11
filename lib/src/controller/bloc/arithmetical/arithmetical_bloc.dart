@@ -27,24 +27,53 @@ class ArithmeticalBloc extends Bloc<ArithmeticalEvent, ArithmeticalState> {
               allInput.substring(0, allInput.length - 1) + data;
         } else {
           log("Last is number");
-          allInput += data;
+          // log(event.cursorPos.toString());
+          //allInput += data;
+          log(allInput.length.toString());
+          log(event.cursorPos.toString());
+          if (event.cursorPos != allInput.length &&
+              event.cursorPos <= allInput.length) {
+            log("equal");
+            allInput =
+                allInput.substring(0, event.cursorPos) +
+                data +
+                allInput.substring(event.cursorPos);
+          } else {
+            allInput += data;
+          }
+          log(allInput);
         }
 
-        log(allInput.toString());
-        emit(ContinueState(mainInput: allInput));
+        log(allInput.length.toString());
+        log(event.cursorPos.toString());
+        emit(
+          ContinueState(
+            mainInput: allInput,
+            cursorPos: allInput.length != event.cursorPos
+                ? event.cursorPos + 1
+                : allInput.length,
+          ),
+        );
       } else if (data == "AC") {
         allInput = "";
         emit(ContinueState(mainInput: "0"));
       } else if (data == Icons.backspace_outlined) {
-        allInput = allInput.substring(0, allInput.length - 1);
-        emit(ContinueState(mainInput: allInput));
+        log(event.cursorPos.toString());
+        allInput =
+            allInput.substring(0, event.cursorPos - 1) +
+            allInput.substring(event.cursorPos);
+        emit(
+          ContinueState(mainInput: allInput, cursorPos: event.cursorPos - 1),
+        );
       } else if (data == '=') {
-        log(allInput.toString());
-        log(event.mainInput.toString());
+        // log(allInput.toString());
+        // log(event.mainInput.toString());
         double result = calCulateResult(event.mainInput);
 
         allInput = result.toString();
-        emit(ResultState(result: allInput));
+        log("All input: $allInput");
+
+        emit(ResultState(result: allInput, cursorPos: allInput.length));
       }
     });
     on<ArithmeticalListenerEvent>((event, emit) {

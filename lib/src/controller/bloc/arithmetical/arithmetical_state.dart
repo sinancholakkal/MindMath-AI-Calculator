@@ -11,12 +11,14 @@ final class ArithmeticalInitial extends ArithmeticalState {}
 // }
 class ContinueState extends ArithmeticalState {
   final String mainInput;
-  ContinueState({required this.mainInput});
+  final int? cursorPos;
+  ContinueState({required this.mainInput, this.cursorPos});
 }
 
 class ResultState extends ArithmeticalState {
   final String result;
-  ResultState({required this.result});
+  final int cursorPos;
+  ResultState({required this.result, required this.cursorPos});
 }
 
 class ListenerState extends ArithmeticalState {
