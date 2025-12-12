@@ -1,7 +1,4 @@
-import 'dart:developer';
 import 'dart:io';
-import 'dart:math';
-import 'dart:ui';
 
 import 'package:bloc/bloc.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
