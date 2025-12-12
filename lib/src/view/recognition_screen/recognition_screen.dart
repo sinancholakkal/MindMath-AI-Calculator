@@ -24,7 +24,7 @@ class RecognitionScreen extends StatefulWidget {
 }
 
 class _RecognitionScreenState extends State<RecognitionScreen> {
-  String _selectedOperator = '+'; // Default operator
+  final String _selectedOperator = '+'; // Default operator
   final List<String> _operators = ['+', '-', 'x', '/'];
   String result = "";
 

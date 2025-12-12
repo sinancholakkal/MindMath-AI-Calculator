@@ -82,53 +82,65 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                           }
                         },
                         child: Container(
-                          width: double.infinity,
+                          height: 80,
                           alignment: Alignment.centerRight,
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            reverse: true,
-                            child:
-                                BlocConsumer<
-                                  ArithmeticalBloc,
-                                  ArithmeticalState
-                                >(
-                                  listener: (context, state) {
-                                    if (state is ContinueState) {
-                                      mainInputController.text =
-                                          state.mainInput;
-                                    }
-                                  },
+                          child:
+                              BlocConsumer<ArithmeticalBloc, ArithmeticalState>(
+                                listener: (context, state) {
+                                  if (state is ContinueState) {
+                                    mainInputController.text = state.mainInput;
 
-                                  builder: (context, state) {
-                                    double size = 64;
-                                    if (state is ResultState) {
-                                      size = 24;
+                                    if (state.cursorPos != null) {
+                                      mainInputController.selection =
+                                          TextSelection.fromPosition(
+                                            TextPosition(
+                                              offset: state.cursorPos!.clamp(
+                                                0,
+                                                mainInputController.text.length,
+                                              ),
+                                            ),
+                                          );
                                     }
-                                    if (state is ContinueState) {
-                                      size = 64;
-                                    }
-                                    return AnimatedDefaultTextStyle(
-                                      duration: const Duration(
-                                        milliseconds: 200,
+                                  }
+                                },
+
+                                builder: (context, state) {
+                                  double size = 64;
+                                  if (state is ResultState) {
+                                    size = 24;
+                                  }
+                                  if (state is ContinueState) {
+                                    size = 64;
+                                  }
+                                  return SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    reverse: true,
+                                    controller: mainInputScrollController,
+                                    child: IntrinsicWidth(
+                                      child: TextField(
+                                        controller: mainInputController,
+                                        textAlign: TextAlign.right,
+                                        showCursor: true,
+                                        readOnly: true,
+                                        autofocus: true,
+                                        style: TextStyle(
+                                          fontSize: size,
+                                          fontWeight: FontWeight.w400,
+                                          color:
+                                              Theme.of(context).brightness ==
+                                                  Brightness.dark
+                                              ? Colors.white
+                                              : Colors.black,
+                                        ),
+                                        keyboardType: TextInputType.number,
+                                        decoration: InputDecoration(
+                                          border: InputBorder.none,
+                                        ),
                                       ),
-                                      style: TextStyle(
-                                        fontSize: size,
-                                        fontWeight: FontWeight.w400,
-                                        color:
-                                            Theme.of(context).brightness ==
-                                                Brightness.dark
-                                            ? Colors.white
-                                            : Colors.black,
-                                      ),
-                                      child: Text(
-                                        mainInputController.text.isEmpty
-                                            ? "0"
-                                            : mainInputController.text,
-                                      ),
-                                    );
-                                  },
-                                ),
-                          ),
+                                    ),
+                                  );
+                                },
+                              ),
                         ),
                       ),
                       SizedBox(height: 10),
@@ -237,11 +249,26 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
 
           return;
         }
+        // if (data == Icons.backspace_outlined) {
+        //   mainInputController.text =
+        //       mainInputController.text.substring(
+        //         0,
+        //         mainInputController.selection.baseOffset - 1,
+        //       ) +
+        //       mainInputController.text.substring(
+        //         mainInputController.selection.baseOffset,
+        //       );
+        //   mainInputController.selection = TextSelection.collapsed(
+        //     offset: mainInputController.selection.baseOffset - 2,
+        //   );
 
+        //   return;
+        // }
         context.read<ArithmeticalBloc>().add(
           ArithmeticalTapEvent(
             expression: data,
             mainInput: mainInputController.text,
+            cursorPos: mainInputController.selection.baseOffset,
           ),
         );
       },
