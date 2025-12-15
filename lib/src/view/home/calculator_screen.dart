@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mindmath_ai_calculator/src/controller/bloc/arithmetical/arithmetical_bloc.dart';
 import 'package:mindmath_ai_calculator/src/controller/bloc/image_pick/image_pick_bloc.dart';
+import 'package:mindmath_ai_calculator/src/controller/cubit/toggile_cubit/toggle_cubit.dart';
 import 'package:mindmath_ai_calculator/src/view/home/widgets/calc_button.dart';
 import 'package:mindmath_ai_calculator/src/view/recognition_screen/recognition_screen.dart';
 
