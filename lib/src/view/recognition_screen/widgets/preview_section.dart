@@ -15,27 +15,19 @@ class PreviewSection extends StatelessWidget {
       children: [
         const Text(
           "Equation Preview",
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, decoration: TextDecoration.underline), 
+          textAlign: .start,
         ),
-        const SizedBox(height: 8),
-        Container(
+        SizedBox(
           width: double.infinity,
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: Colors.grey.shade900,
-            borderRadius: BorderRadius.circular(16),
-          ),
           child: BlocBuilder<SelectOperationCubit, String>(
             builder: (context, state) {
               return Text(
                 widget.numbers.isEmpty ? "0" : widget.numbers.join(" $state "),
                 style: const TextStyle(
-                  fontSize: 24,
+                  fontSize: 16,
                   fontFamily: 'monospace',
-                  fontWeight: FontWeight.bold,
-                  color: Colors.greenAccent,
                 ),
-                textAlign: TextAlign.center,
               );
             },
           ),

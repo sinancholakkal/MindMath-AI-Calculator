@@ -8,7 +8,7 @@ import '../../src/controller/cubit/toggile_cubit/toggle_cubit.dart';
 class CostumeToggle extends StatelessWidget {
   const CostumeToggle({super.key});
 
-  final animationDuration = const Duration(milliseconds: 400);
+  final animationDuration = const Duration(milliseconds: 200);
 
   @override
   Widget build(BuildContext context) {

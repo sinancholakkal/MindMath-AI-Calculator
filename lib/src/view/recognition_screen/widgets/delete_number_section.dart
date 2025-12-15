@@ -9,51 +9,42 @@ class DeletedNumberSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: .start,
       children: [
-        const Text(
+        Text(
           "Detected Numbers",
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            decoration: TextDecoration.underline,
+          ),
+          textAlign: TextAlign.start,
         ),
-        const SizedBox(height: 8),
-        Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: Colors.grey.shade200),
-          ),
-          child: Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: widget.numbers.isEmpty
-                ? [
-                    const Text(
-                      "No numbers found",
-                      style: TextStyle(color: Colors.grey),
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: widget.numbers.isEmpty
+              ? [
+                  const Text(
+                    "No numbers found",
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                ]
+              : List.generate(widget.numbers.length, (index) {
+                  return Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 6,
                     ),
-                  ]
-                : List.generate(widget.numbers.length, (index) {
-                    return Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 6,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.deepPurple.shade50,
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: Colors.deepPurple.shade100),
-                      ),
-                      child: Text(
-                        widget.numbers[index].toString(),
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.deepPurple.shade700,
-                        ),
-                      ),
-                    );
-                  }),
-          ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                    child: Text(
+                      widget.numbers[index].toString(),
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  );
+                }),
         ),
       ],
     );
