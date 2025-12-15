@@ -25,6 +25,8 @@ class ArithmeticalBloc extends Bloc<ArithmeticalEvent, ArithmeticalState> {
           log("Last is operator");
           allInput = allInput =
               allInput.substring(0, allInput.length - 1) + data;
+        } else if (data == "." && allInput.contains(".")) {
+          log("Last is dot");
         } else {
           log("Last is number");
           // log(event.cursorPos.toString());
