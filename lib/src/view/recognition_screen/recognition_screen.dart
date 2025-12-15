@@ -1,7 +1,12 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mindmath_ai_calculator/core/colors/app_palette.dart';
+import 'package:mindmath_ai_calculator/core/common/custome_appbar.dart';
+import 'package:mindmath_ai_calculator/core/constant/media_quary.dart';
 import 'package:mindmath_ai_calculator/src/controller/bloc/cubit/select_operation_cubit.dart';
+import 'package:mindmath_ai_calculator/src/controller/cubit/toggile_cubit/toggle_cubit.dart';
 import 'package:mindmath_ai_calculator/src/view/recognition_screen/widgets/delete_number_section.dart';
 import 'package:mindmath_ai_calculator/src/view/recognition_screen/widgets/image_section.dart';
 import 'package:mindmath_ai_calculator/src/view/recognition_screen/widgets/operator_selection.dart';
@@ -21,8 +26,8 @@ class RecognitionScreen extends StatefulWidget {
 }
 
 class _RecognitionScreenState extends State<RecognitionScreen> {
-  final String _selectedOperator = '+'; // Default operator
-  final List<String> _operators = ['+', '-', 'x', '/'];
+  final String _selectedOperator = '+';
+  final List<String> _operators = ['+', '-', 'x', '/', '%'];
   String result = "";
 
   @override
@@ -38,16 +43,11 @@ class _RecognitionScreenState extends State<RecognitionScreen> {
         result = widget.numbers.join(state);
       },
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            'Review & Calculate',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          elevation: 0,
-          centerTitle: true,
-        ),
+        appBar: CustomAppBar(title: 'Review & Calculate', isTitle: true),
         body: SafeArea(
           child: Column(
+            mainAxisAlignment: .start,
+            crossAxisAlignment: .start,
             children: [
               Expanded(
                 child: SingleChildScrollView(
@@ -55,50 +55,46 @@ class _RecognitionScreenState extends State<RecognitionScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      // Image Section
                       ImageSection(widget: widget),
-                      const SizedBox(height: 24),
+                      hight(ctx: context, height: 0.02),
 
-                      // Numbers Detected Section
                       DeletedNumberSection(widget: widget),
-                      const SizedBox(height: 24),
-
-                      // Operator Selection Section
+                      hight(ctx: context, height: 0.02),
                       OperatorSelection(operators: _operators),
-                      const SizedBox(height: 24),
-
-                      // Preview Section
+                      hight(ctx: context, height: 0.025),
                       PreviewSection(widget: widget),
-                      const SizedBox(height: 20),
+                      hight(ctx: context, height: 0.02),
+                      BlocBuilder<ToggleCubit, bool>(
+                        builder: (context, isEnable) {
+                          return RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: "Generate Result? ",
+                                  style: TextStyle(
+                                    color:isEnable ?  AppPalette.white : AppPalette.black,
+                                    fontSize: 15,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: "Tab to Result",
+                                  style: const TextStyle(
+                                    color: AppPalette.blue,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                    decoration:   TextDecoration.underline,
+                                  ),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                        Navigator.pop(context, result);
+                                    },
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
                     ],
-                  ),
-                ),
-              ),
-              // Bottom Action Button
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: SizedBox(
-                  width: double.infinity,
-                  height: 56,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context, result);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.deepPurple,
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      elevation: 2,
-                    ),
-                    child: const Text(
-                      'Calculate Result',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
                   ),
                 ),
               ),

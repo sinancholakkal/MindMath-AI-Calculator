@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mindmath_ai_calculator/core/colors/app_palette.dart';
+import 'package:mindmath_ai_calculator/core/constant/media_quary.dart';
 import 'package:mindmath_ai_calculator/src/controller/bloc/cubit/select_operation_cubit.dart';
+import 'package:mindmath_ai_calculator/src/controller/cubit/toggile_cubit/toggle_cubit.dart';
 
 class OperatorSelection extends StatelessWidget {
   const OperatorSelection({super.key, required List<String> operators})
@@ -15,13 +18,18 @@ class OperatorSelection extends StatelessWidget {
       children: [
         const Text(
           "Select Operation",
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            decoration: TextDecoration.underline,
+          ),
+          textAlign: TextAlign.start,
         ),
-        const SizedBox(height: 12),
+        hight(ctx: context, height: 0.01),
         BlocBuilder<SelectOperationCubit, String>(
           builder: (context, state) {
             return Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: List.generate(_operators.length, (index) {
                 final isSelected = state == _operators[index];
                 return GestureDetector(
@@ -30,39 +38,32 @@ class OperatorSelection extends StatelessWidget {
                       _operators[index],
                     );
                   },
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 200),
-                    width: 60,
-                    height: 60,
-                    decoration: BoxDecoration(
-                      color: isSelected ? Colors.deepPurple : Colors.white,
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: isSelected
-                              ? Colors.deepPurple.withValues(alpha: 0.4)
-                              : Colors.grey.withValues(alpha: 0.1),
-                          blurRadius: 8,
-                          offset: const Offset(0, 4),
+                  child: BlocBuilder<ToggleCubit, bool>(
+                    builder: (context, isEnable) {
+                      return AnimatedContainer(
+                        duration: const Duration(milliseconds: 200),
+                        width: 30,
+                        height: 30,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          border: Border.all(
+                            color: isSelected == isEnable
+                                ? AppPalette.black
+                                : AppPalette.white,
+                            width: isSelected ? 1 : 0,
+                          ),
                         ),
-                      ],
-                      border: Border.all(
-                        color: isSelected
-                            ? Colors.deepPurple
-                            : Colors.grey.shade300,
-                        width: isSelected ? 0 : 1,
-                      ),
-                    ),
-                    child: Center(
-                      child: Text(
-                        _operators[index],
-                        style: TextStyle(
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold,
-                          color: isSelected ? Colors.white : Colors.black87,
+                        child: Center(
+                          child: Text(
+                            _operators[index],
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
+                      );
+                    },
                   ),
                 );
               }),
