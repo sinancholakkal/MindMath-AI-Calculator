@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ToggleCubit(),
+      create: (context) => ToggleCubit()..init(),
 
       child: BlocBuilder<ToggleCubit, bool>(
         builder: (context, state) {
@@ -38,7 +38,6 @@ class MyApp extends StatelessWidget {
               BlocProvider(create: (context) => ImagePickBloc()),
               BlocProvider(create: (context) => SelectOperationCubit()),
               BlocProvider(create: (context) => sl<SpeechCubit>()..init()),
-              BlocProvider(create: (context) => ToggleCubit()..init()),
             ],
             child: MaterialApp(
               debugShowCheckedModeBanner: false,
