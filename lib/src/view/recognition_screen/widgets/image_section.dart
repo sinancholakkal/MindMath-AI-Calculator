@@ -10,24 +10,18 @@ class ImageSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 200,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 10,
-            offset: const Offset(0, 5),
+    return Align(
+      alignment: .centerLeft,
+      child: Container(
+        height: 150,
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(0)),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(0),
+          child: Image.file(
+            File(widget.image.path),
+            fit: BoxFit.contain,
+            width: double.infinity,
           ),
-        ],
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(20),
-        child: Image.file(
-          File(widget.image.path),
-          fit: BoxFit.cover,
-          width: double.infinity,
         ),
       ),
     );
