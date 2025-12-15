@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mindmath_ai_calculator/core/di/di.dart';
 import 'package:mindmath_ai_calculator/core/routes/app_routes.dart';
+import 'package:mindmath_ai_calculator/src/controller/bloc/ai_recognition/ai_recognition_bloc.dart';
 import 'package:mindmath_ai_calculator/src/controller/bloc/arithmetical/arithmetical_bloc.dart';
 import 'package:mindmath_ai_calculator/src/controller/bloc/cubit/select_operation_cubit.dart';
 import 'package:mindmath_ai_calculator/src/controller/bloc/image_pick/image_pick_bloc.dart';
@@ -39,6 +40,7 @@ class MyApp extends StatelessWidget {
               BlocProvider(create: (context) => SelectOperationCubit()),
               BlocProvider(create: (context) => sl<SpeechCubit>()..init()),
               BlocProvider(create: (context) => ToggleCubit()..init()),
+              BlocProvider(create: (context) => AiRecognitionBloc()),
             ],
             child: MaterialApp(
               debugShowCheckedModeBanner: false,

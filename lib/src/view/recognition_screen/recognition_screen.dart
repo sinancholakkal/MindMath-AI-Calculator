@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mindmath_ai_calculator/src/controller/bloc/ai_recognition/ai_recognition_bloc.dart';
 import 'package:mindmath_ai_calculator/src/controller/bloc/cubit/select_operation_cubit.dart';
 import 'package:mindmath_ai_calculator/src/view/recognition_screen/widgets/delete_number_section.dart';
 import 'package:mindmath_ai_calculator/src/view/recognition_screen/widgets/image_section.dart';
@@ -24,11 +27,13 @@ class _RecognitionScreenState extends State<RecognitionScreen> {
   final String _selectedOperator = '+'; // Default operator
   final List<String> _operators = ['+', '-', 'x', '/'];
   String result = "";
+  late final File? image;
 
   @override
   void initState() {
     super.initState();
     result = widget.numbers.join(" $_selectedOperator ");
+    image = File(widget.image.path);
   }
 
   @override
@@ -73,6 +78,14 @@ class _RecognitionScreenState extends State<RecognitionScreen> {
                     ],
                   ),
                 ),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  context.read<AiRecognitionBloc>().add(
+                    AiRecognitionImageEvent(image: image!),
+                  );
+                },
+                child: const Text("Send to AI"),
               ),
               // Bottom Action Button
               Padding(
