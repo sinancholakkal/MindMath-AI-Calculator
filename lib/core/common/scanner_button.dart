@@ -1,10 +1,11 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mindmath_ai_calculator/core/colors/app_palette.dart';
 import 'package:mindmath_ai_calculator/src/controller/bloc/image_pick/image_pick_bloc.dart';
 import 'package:mindmath_ai_calculator/src/controller/cubit/toggile_cubit/toggle_cubit.dart';
+import 'package:mindmath_ai_calculator/src/view/home/widgets/calc_camara_option.dart';
 
 class ScannerButton extends StatelessWidget {
   const ScannerButton({super.key});
@@ -25,36 +26,23 @@ class ScannerButton extends StatelessWidget {
           child: Center(
             child: IconButton(
               onPressed: () {
-                showDialog(
+                BottomSheetOptions().showBottomSheet(
                   context: context,
-                  builder: (context) {
-                    return CupertinoAlertDialog(
-                      title: const Text("Select Image Source"),
-                      content: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          CupertinoActionSheetAction(
-                            child: const Text("Gallery"),
-                            onPressed: () {
-                              context.read<ImagePickBloc>().add(
-                                ImagePickerEvent(source: ImageSource.gallery),
-                              );
-                              Navigator.pop(context);
-                            },
-                          ),
-                          CupertinoActionSheetAction(
-                            child: const Text("Camera"),
-                            onPressed: () {
-                              context.read<ImagePickBloc>().add(
-                                ImagePickerEvent(source: ImageSource.camera),
-                              );
-                              Navigator.pop(context);
-                            },
-                          ),
-                        ],
-                      ),
+                  screenHeight: MediaQuery.of(context).size.height,
+                  screenWidth: MediaQuery.of(context).size.width,
+                  cameraAction: () {
+                    context.read<ImagePickBloc>().add(
+                      ImagePickerEvent(source: ImageSource.camera),
                     );
+                    Navigator.pop(context);
                   },
+                  galleryAction: () {
+                    context.read<ImagePickBloc>().add(
+                      ImagePickerEvent(source: ImageSource.gallery),
+                    );
+                    Navigator.pop(context);
+                  },
+                  currentTheme: isEnabled,
                 );
               },
               icon: Icon(
