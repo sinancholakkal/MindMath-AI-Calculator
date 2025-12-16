@@ -41,16 +41,19 @@ class OperatorSelection extends StatelessWidget {
                   child: BlocBuilder<ToggleCubit, bool>(
                     builder: (context, isEnable) {
                       return AnimatedContainer(
-                        duration: const Duration(milliseconds: 200),
-                        width: 30,
-                        height: 30,
+                        duration: const Duration(milliseconds: 100),
+                        width: 35,
+                        height: 35,
                         decoration: BoxDecoration(
-                          shape: BoxShape.rectangle,
+                          color: isSelected ? AppPalette.blue : Colors.transparent,
+                          shape: BoxShape.circle,
                           border: Border.all(
-                            color: isSelected == isEnable
-                                ? AppPalette.black
-                                : AppPalette.white,
-                            width: isSelected ? 1 : 0,
+                            color: isSelected
+                                ? AppPalette.blue
+                                : isEnable
+                                ? AppPalette.black2
+                                : AppPalette.hint,
+                            width: isSelected ? 2 : 0,
                           ),
                         ),
                         child: Center(
@@ -58,6 +61,7 @@ class OperatorSelection extends StatelessWidget {
                             _operators[index],
                             style: TextStyle(
                               fontSize: 20,
+                              color: isSelected ? AppPalette.white : isEnable ? AppPalette.white : AppPalette.black,
                               fontWeight: FontWeight.bold,
                             ),
                           ),

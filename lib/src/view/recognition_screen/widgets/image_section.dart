@@ -14,22 +14,21 @@ class ImageSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Align(
-      alignment: .centerLeft,
+      alignment: Alignment.centerLeft,
       child: Stack(
         alignment: Alignment.center,
         children: [
           SizedBox(
             height: 150,
-        
-              child: Hero(
-                tag: 'zoom-image',
-                child: Image.file(
-                  File(widget.image.path),
-                  fit: BoxFit.contain,
-                  width: double.infinity,
-                ),
+
+            child: Hero(
+              tag: 'zoom-image',
+              child: Image.file(
+                File(widget.image.path),
+                fit: BoxFit.contain,
+                width: double.infinity,
               ),
-            
+            ),
           ),
           LottieFilesCommon.load(
             assetPath: scanning,
