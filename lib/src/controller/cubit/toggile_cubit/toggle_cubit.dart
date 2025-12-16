@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ToggleCubit extends Cubit<bool> {
   ToggleCubit() : super(false) {
-    init();
+   init ();
   }
 
   void toggle() async {

@@ -38,7 +38,6 @@ class MyApp extends StatelessWidget {
               BlocProvider(create: (context) => ImagePickBloc()),
               BlocProvider(create: (context) => SelectOperationCubit()),
               BlocProvider(create: (context) => sl<SpeechCubit>()..init()),
-              BlocProvider(create: (context) => ToggleCubit()..init()),
             ],
             child: MaterialApp(
               debugShowCheckedModeBanner: false,
