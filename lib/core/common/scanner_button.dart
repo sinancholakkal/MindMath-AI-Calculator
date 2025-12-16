@@ -5,7 +5,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mindmath_ai_calculator/core/colors/app_palette.dart';
 import 'package:mindmath_ai_calculator/src/controller/bloc/image_pick/image_pick_bloc.dart';
 import 'package:mindmath_ai_calculator/src/controller/cubit/toggile_cubit/toggle_cubit.dart';
-import 'package:mindmath_ai_calculator/src/view/home/widgets/calc_camara_option.dart';
+import 'package:mindmath_ai_calculator/core/common/custome_options.dart';
+
+import '../images/const_images.dart';
 
 class ScannerButton extends StatelessWidget {
   const ScannerButton({super.key});
@@ -27,16 +29,22 @@ class ScannerButton extends StatelessWidget {
             child: IconButton(
               onPressed: () {
                 BottomSheetOptions().showBottomSheet(
+                  mainText:  "Choose Your Image Recognition Method" ,
+                  subText: 'After choosing, follow the on‑screen steps to complete your Image Recognition.',
                   context: context,
                   screenHeight: MediaQuery.of(context).size.height,
                   screenWidth: MediaQuery.of(context).size.width,
-                  cameraAction: () {
+                  actionLeft: () {
                     context.read<ImagePickBloc>().add(
                       ImagePickerEvent(source: ImageSource.camera),
                     );
                     Navigator.pop(context);
                   },
-                  galleryAction: () {
+                  lottieLeft: takePhoto,
+                  textLeft: 'Open Camera',
+                  lottieRight: gallery,
+                  textRight: 'Image from Gallery',
+                  actionRight: () {
                     context.read<ImagePickBloc>().add(
                       ImagePickerEvent(source: ImageSource.gallery),
                     );

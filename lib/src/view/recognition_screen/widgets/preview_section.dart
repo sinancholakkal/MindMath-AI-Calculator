@@ -15,7 +15,7 @@ class PreviewSection extends StatelessWidget {
       children: [
         const Text(
           "Equation Preview",
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, decoration: TextDecoration.underline), 
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, decoration: .underline), 
           textAlign: .start,
         ),
         SizedBox(
@@ -25,7 +25,8 @@ class PreviewSection extends StatelessWidget {
               return Text(
                 widget.numbers.isEmpty ? "0" : widget.numbers.join(" $state "),
                 style: const TextStyle(
-                  fontSize: 16,
+                  fontSize: 19,
+                  fontWeight: .bold,
                   fontFamily: 'monospace',
                 ),
               );

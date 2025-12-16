@@ -24,11 +24,7 @@ class DeletedNumberSection extends StatelessWidget {
           spacing: 8,
           runSpacing: 2,
           children: widget.numbers.isEmpty
-              ? [
-                  const Text(
-                    "No numbers found",
-                  ),
-                ]
+              ? [const Text("No numbers found")]
               : List.generate(widget.numbers.length, (index) {
                   return Container(
                     padding: const EdgeInsets.symmetric(
@@ -37,7 +33,7 @@ class DeletedNumberSection extends StatelessWidget {
                     ),
                     child: Text(
                       widget.numbers[index].toString(),
-                      style: TextStyle(fontSize: 16),
+                      style: TextStyle(fontSize: 19, fontWeight: .bold),
                     ),
                   );
                 }),
