@@ -58,11 +58,43 @@ class _RecognitionScreenState extends State<RecognitionScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
+                      Text(
+                        "This module provides advanced image recognition for user-selected images, powered by AI with full offline support. It accurately detects numerical data and intelligently processes the extracted values to perform mathematical operations and generate precise results.",
+                        style: TextStyle(fontSize: 12),
+                      ),
+                      hight(ctx: context, height: 0.02),
                       ImageSection(widget: widget),
                       hight(ctx: context, height: 0.02),
+                      Text(
+                        'AI-Powered Image Recognition?',
+                        style: TextStyle(
+                          color: AppPalette.blue,
+                          fontWeight: .bold,
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
+                      Text('1. How is it achieved?'),
+                      Text(
+                        '2. AI-powered recognition support.',
+                      ),
 
+                      Row(
+                        children: [
+                          IconButton(
+                            onPressed: () {},
+                            icon: Icon(Icons.help_outline_rounded),
+                          ),
+                          IconButton(
+                            onPressed: () {},
+                            icon: Icon(Icons.cloud_sync_sharp),
+                            color: AppPalette.blue,
+                          ),
+                        ],
+                      ),
+                      hight(ctx: context, height: 0.02),
                       DeletedNumberSection(widget: widget),
                       hight(ctx: context, height: 0.02),
+
                       OperatorSelection(operators: _operators),
                       hight(ctx: context, height: 0.025),
                       PreviewSection(widget: widget),
@@ -75,7 +107,9 @@ class _RecognitionScreenState extends State<RecognitionScreen> {
                                 TextSpan(
                                   text: "Generate Result? ",
                                   style: TextStyle(
-                                    color:isEnable ?  AppPalette.white : AppPalette.black,
+                                    color: isEnable
+                                        ? AppPalette.white
+                                        : AppPalette.black,
                                     fontSize: 15,
                                   ),
                                 ),
@@ -85,11 +119,11 @@ class _RecognitionScreenState extends State<RecognitionScreen> {
                                     color: AppPalette.blue,
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold,
-                                    decoration:   TextDecoration.underline,
+                                    decoration: TextDecoration.underline,
                                   ),
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
-                                        Navigator.pop(context, result);
+                                      Navigator.pop(context, result);
                                     },
                                 ),
                               ],

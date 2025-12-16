@@ -22,22 +22,18 @@ class DeletedNumberSection extends StatelessWidget {
         ),
         Wrap(
           spacing: 8,
-          runSpacing: 8,
+          runSpacing: 2,
           children: widget.numbers.isEmpty
               ? [
                   const Text(
                     "No numbers found",
-                    style: TextStyle(color: Colors.grey),
                   ),
                 ]
               : List.generate(widget.numbers.length, (index) {
                   return Container(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 12,
-                      vertical: 6,
-                    ),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(2),
+                      vertical: 2,
                     ),
                     child: Text(
                       widget.numbers[index].toString(),
