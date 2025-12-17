@@ -1,6 +1,10 @@
+import 'dart:ui';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:glass_fish_button/glass_fish_button.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mindmath_ai_calculator/core/colors/app_palette.dart';
 import 'package:mindmath_ai_calculator/core/common/custome_alertbox.dart';
@@ -63,7 +67,7 @@ class _RecognitionScreenState extends State<RecognitionScreen> {
                         "This module provides advanced image recognition for user-selected images, powered by AI with full offline support. It accurately detects numerical data and intelligently processes the extracted values to perform mathematical operations and generate precise results.",
                   );
                 },
-                icon: Icon(Icons.help_outline),
+                icon: Icon(CupertinoIcons.ellipsis_circle),
               ),
             ],
           ),
@@ -93,62 +97,65 @@ class _RecognitionScreenState extends State<RecognitionScreen> {
                             Text(
                               'AI-Powered Image Recognition?',
                               style: TextStyle(
-                                color: AppPalette.blue,
                                 fontWeight: .bold,
                                 decoration: TextDecoration.underline,
                               ),
                             ),
                             Text('1. How is it achieved?'),
                             Text('2. AI-powered recognition support.'),
-
+                            hight(ctx: context, height: 0.01),
                             Builder(
                               builder: (context) {
                                 final isEnabled = context
                                     .watch<ToggleCubit>()
                                     .state;
-                                return TextButton(
-                                  onPressed: () {
-                                    BottomSheetOptions().showBottomSheet(
-                                      mainText: 'AI-Powered Image Recognition',
-                                      subText:
-                                          'Leverage intelligent recognition powered by AI, following established guidelines. AI support may have certain limitations.',
-
-                                      context: context,
-                                      screenHeight: MediaQuery.of(
-                                        context,
-                                      ).size.height,
-                                      screenWidth: MediaQuery.of(
-                                        context,
-                                      ).size.width,
-                                      actionLeft: () {
-                                        CustomCupertinoDialog.show(
-                                          context: context,
-                                          title: 'Working Guidelines',
-                                          message:
-                                              "AI-powered image recognition monitors and accurately detects numerical data. When online, cloud-based AI is utilized; otherwise, an offline model is used for detection. AI support may be subject to daily usage limits. Activating the AI Assistant enables advanced AI recognition features along with a visual mesh effect to indicate AI-based processing.",
-                                        );
-                                      },
-                                      lottieLeft: needHelp,
-                                      textLeft: 'How does it work?',
-                                      lottieRight: aiAssistant,
-                                      textRight: 'AI Assistant',
-                                      actionRight: () {
-                                        context
-                                            .read<AIAssistantVisibilityCubit>()
-                                            .toggle();
-                                        Navigator.pop(context);
-                                      },
-                                      currentTheme: isEnabled,
-                                    );
-                                  },
-                                  child: Text(
-                                    'AI - Assistant',
-                                    style: TextStyle(
-                                      color: AppPalette.blue,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                      decoration: TextDecoration.underline,
+                                return AnimatedScale(
+                                  duration: const Duration(milliseconds: 120),
+                                  scale: 1,
+                                  child: GlassFishButton(
+                                    label: 'AI - Assistant',
+                                    height: 40,
+                                    brightness: .light,
+                                    textStyle: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
                                     ),
+                                    onPressed: () {
+                                      BottomSheetOptions().showBottomSheet(
+                                            mainText:
+                                                'AI-Powered Image Recognition',
+                                            subText:
+                                                'Leverage intelligent recognition powered by AI, following established guidelines. AI support may have certain limitations.',
+                                            context: context,
+                                            screenHeight: MediaQuery.of(
+                                              context,
+                                            ).size.height,
+                                            screenWidth: MediaQuery.of(
+                                              context,
+                                            ).size.width,
+                                            actionLeft: () {
+                                              CustomCupertinoDialog.show(
+                                                context: context,
+                                                title: 'Working Guidelines',
+                                                message:
+                                                    "AI-powered image recognition monitors and accurately detects numerical data. When online, cloud-based AI is utilized; otherwise, an offline model is used for detection. AI support may be subject to daily usage limits. Activating the AI Assistant enables advanced AI recognition features along with a visual mesh effect to indicate AI-based processing.",
+                                              );
+                                            },
+                                            lottieLeft: needHelp,
+                                            textLeft: 'How does it work?',
+                                            lottieRight: aiAssistant,
+                                            textRight: 'AI Assistant',
+                                            actionRight: () {
+                                              context
+                                                  .read<
+                                                    AIAssistantVisibilityCubit
+                                                  >()
+                                                  .toggle();
+                                              Navigator.pop(context);
+                                            },
+                                            currentTheme: isEnabled,
+                                          );
+                                    },
                                   ),
                                 );
                               },
@@ -160,7 +167,7 @@ class _RecognitionScreenState extends State<RecognitionScreen> {
                             OperatorSelection(operators: _operators),
                             hight(ctx: context, height: 0.025),
                             PreviewSection(widget: widget),
-                            hight(ctx: context, height: 0.02),
+                            hight(ctx: context, height: 0.03),
                             BlocBuilder<ToggleCubit, bool>(
                               builder: (context, isEnable) {
                                 return RichText(

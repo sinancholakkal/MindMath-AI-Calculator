@@ -74,7 +74,7 @@ class MeshNetworkPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paintLine = Paint()
-      ..color = AppPalette.blue.withValues(alpha: .7)
+      ..color = AppPalette.blue.withValues(alpha: .9)
       ..strokeWidth = 1.0;
 
     final paintDot = Paint()

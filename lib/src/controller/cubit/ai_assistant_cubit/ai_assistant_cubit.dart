@@ -38,7 +38,7 @@ class AIAssistantCubit extends Cubit<AIAssistantState> {
     if (state.particles.isNotEmpty) return;
 
     final List<Particle> newParticles = [];
-    for (int i = 0; i < 30; i++) {
+    for (int i = 0; i < 35; i++) {
       newParticles.add(
         Particle(
           position: Offset(
