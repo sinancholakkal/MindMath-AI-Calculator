@@ -49,7 +49,7 @@ class ImagePickBloc extends Bloc<ImagePickEvent, ImagePickState> {
       emit(ImagePickLoading());
       log("started AI Recognition");
 
-      final model = GenerativeModel(model: "gemini-2.5-flash", apiKey: aiKey);
+      final model = GenerativeModel(model: "gemini-2.5-flash", apiKey: aikey);
 
       final imageBytes = await event.image.readAsBytes();
 
