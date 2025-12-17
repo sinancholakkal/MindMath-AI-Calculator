@@ -45,7 +45,8 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
           mainInputController.text = await Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => RecognitionScreen(image: state.image, numbers: state.numbers),
+              builder: (context) =>
+                  RecognitionScreen(image: state.image, numbers: state.numbers),
             ),
           );
         }
@@ -168,7 +169,11 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                                   : Colors.black,
                             ),
 
-                            child: Text(result),
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              reverse: true,
+                              child: Text(result),
+                            ),
                           );
                         },
                       ),
