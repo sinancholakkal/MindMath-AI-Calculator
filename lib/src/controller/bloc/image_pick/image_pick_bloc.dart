@@ -1,6 +1,8 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:meta/meta.dart';
@@ -40,6 +42,43 @@ class ImagePickBloc extends Bloc<ImagePickEvent, ImagePickState> {
         emit(ImagePickLoaded(image: image, numbers: numbers));
       } else {
         emit(ImagePickError(message: "Image not selected"));
+      }
+    });
+    on<ImageAiProcessingEvent>((event, emit) async {
+      emit(ImagePickLoading());
+      log("started AI Recognition");
+      final apiKey = "AIzaSyAWMVrrGDcCh9qt06cFkk-DyK92rQz4ABw";
+      final model = GenerativeModel(model: "gemini-2.5-flash", apiKey: apiKey);
+
+      final imageBytes = await event.image.readAsBytes();
+
+      final content = [
+        Content.multi([
+          TextPart(
+            "Look at this image. Extract ONLY the numbers. Ignore all mathematical symbols (+, -, *, /), text, and currency signs. Return just the numbers, separated by spaces.",
+          ),
+          DataPart('image/jpeg', imageBytes),
+        ]),
+      ];
+      try {
+        log("AI response waiting");
+        final response = await model.generateContent(content);
+        final List<num> numbers = [];
+        if (response.text == null) {
+          emit(ImagePickLoaded(image: event.image, numbers: numbers));
+        } else {
+          for (var element in response.text!.split(".")) {
+            num? n = num.tryParse(element.trim());
+            if (n != null) {
+              numbers.add(n);
+            }
+          }
+          emit(ImagePickLoaded(image: event.image, numbers: numbers));
+        }
+
+        log("AI Saw: ${response.text}");
+      } catch (e) {
+        log(e.toString());
       }
     });
   }

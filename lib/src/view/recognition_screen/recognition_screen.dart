@@ -168,6 +168,11 @@ class _RecognitionScreenState extends State<RecognitionScreen> {
                                                   >()
                                                   .toggle();
                                               Navigator.pop(context);
+                                              context.read<ImagePickBloc>().add(
+                                                ImageAiProcessingEvent(
+                                                  image: image!,
+                                                ),
+                                              );
                                             },
                                             currentTheme: isEnabled,
                                           );
