@@ -6,6 +6,7 @@ import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:meta/meta.dart';
+import 'package:mindmath_ai_calculator/core/keys/key.dart';
 
 part 'image_pick_event.dart';
 part 'image_pick_state.dart';
@@ -47,8 +48,8 @@ class ImagePickBloc extends Bloc<ImagePickEvent, ImagePickState> {
     on<ImageAiProcessingEvent>((event, emit) async {
       emit(ImagePickLoading());
       log("started AI Recognition");
-      final apiKey = "AIzaSyAWMVrrGDcCh9qt06cFkk-DyK92rQz4ABw";
-      final model = GenerativeModel(model: "gemini-2.5-flash", apiKey: apiKey);
+
+      final model = GenerativeModel(model: "gemini-2.5-flash", apiKey: aiKey);
 
       final imageBytes = await event.image.readAsBytes();
 
@@ -67,7 +68,7 @@ class ImagePickBloc extends Bloc<ImagePickEvent, ImagePickState> {
         if (response.text == null) {
           emit(ImagePickLoaded(image: event.image, numbers: numbers));
         } else {
-          for (var element in response.text!.split(".")) {
+          for (var element in response.text!.split(" ")) {
             num? n = num.tryParse(element.trim());
             if (n != null) {
               numbers.add(n);

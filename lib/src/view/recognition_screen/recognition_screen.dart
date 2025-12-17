@@ -84,7 +84,7 @@ class _RecognitionScreenState extends State<RecognitionScreen> {
               },
               builder: (context, state) {
                 if (state is ImagePickLoading) {
-                  return const Center(child: CircularProgressIndicator());
+                  return const AIAssistantView();
                 }
                 return Stack(
                   children: [
