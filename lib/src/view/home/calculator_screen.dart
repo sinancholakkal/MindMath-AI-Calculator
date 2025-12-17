@@ -41,13 +41,10 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   Widget build(BuildContext context) {
     return BlocListener<ImagePickBloc, ImagePickState>(
       listener: (context, state) async {
-        if (state is ImagePickLoaded) {
+        if (state is ImagePickLoading) {
           mainInputController.text = await Navigator.push(
             context,
-            MaterialPageRoute(
-              builder: (context) =>
-                  RecognitionScreen(image: state.image, numbers: state.numbers),
-            ),
+            MaterialPageRoute(builder: (context) => RecognitionScreen()),
           );
         }
       },

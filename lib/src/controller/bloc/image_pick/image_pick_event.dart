@@ -8,3 +8,9 @@ class ImagePickerEvent extends ImagePickEvent {
 
   ImagePickerEvent({required this.source});
 }
+
+class ImageAiProcessingEvent extends ImagePickEvent {
+  final XFile image;
+
+  ImageAiProcessingEvent({required this.image});
+}
