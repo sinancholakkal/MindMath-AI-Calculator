@@ -1,15 +1,16 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mindmath_ai_calculator/core/common/custome_lotties.dart';
 import 'package:mindmath_ai_calculator/core/images/const_images.dart';
 import 'package:mindmath_ai_calculator/src/view/recognition_screen/recognition_screen.dart';
 import 'package:photo_view/photo_view.dart';
 
 class ImageSection extends StatelessWidget {
-  const ImageSection({super.key, required this.widget});
+  const ImageSection({super.key, required this.image});
 
-  final RecognitionScreen widget;
+  final XFile image;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,7 @@ class ImageSection extends StatelessWidget {
             child: Hero(
               tag: 'zoom-image',
               child: Image.file(
-                File(widget.image.path),
+                File(image.path),
                 fit: BoxFit.contain,
                 width: double.infinity,
               ),
@@ -47,7 +48,7 @@ class ImageSection extends StatelessWidget {
                     insetPadding: EdgeInsets.zero,
                     backgroundColor: Colors.black,
                     child: PhotoView(
-                      imageProvider: FileImage(File(widget.image.path)),
+                      imageProvider: FileImage(File(image.path)),
 
                       initialScale: PhotoViewComputedScale.contained,
                       minScale: PhotoViewComputedScale.contained,

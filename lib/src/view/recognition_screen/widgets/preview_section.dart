@@ -4,9 +4,9 @@ import 'package:mindmath_ai_calculator/src/controller/bloc/cubit/select_operatio
 import 'package:mindmath_ai_calculator/src/view/recognition_screen/recognition_screen.dart';
 
 class PreviewSection extends StatelessWidget {
-  const PreviewSection({super.key, required this.widget});
+  const PreviewSection({super.key, required this.numbers});
 
-  final RecognitionScreen widget;
+  final List<num> numbers;
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +15,11 @@ class PreviewSection extends StatelessWidget {
       children: [
         const Text(
           "Equation Preview",
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, decoration: .underline), 
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            decoration: .underline,
+          ),
           textAlign: .start,
         ),
         SizedBox(
@@ -23,7 +27,7 @@ class PreviewSection extends StatelessWidget {
           child: BlocBuilder<SelectOperationCubit, String>(
             builder: (context, state) {
               return Text(
-                widget.numbers.isEmpty ? "0" : widget.numbers.join(" $state "),
+                numbers.isEmpty ? "0" : numbers.join(" $state "),
                 style: const TextStyle(
                   fontSize: 19,
                   fontWeight: .bold,

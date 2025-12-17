@@ -15,6 +15,7 @@ class ImagePickBloc extends Bloc<ImagePickEvent, ImagePickState> {
       final XFile? image = await picker.pickImage(source: event.source);
       final List<num> numbers = [];
       if (image != null) {
+        emit(ImagePickLoading());
         final InputImage inputImage = InputImage.fromFile(File(image.path));
 
         final textRecognizer = TextRecognizer(
