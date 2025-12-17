@@ -216,6 +216,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "9.2.0"
+  glass_fish_button:
+    dependency: "direct main"
+    description:
+      name: glass_fish_button
+      sha256: "335447789f28575be909499e9e5f93fd5fd77c03675a570754a560c517b71e5d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.2"
   google_generative_ai:
     dependency: "direct main"
     description:
