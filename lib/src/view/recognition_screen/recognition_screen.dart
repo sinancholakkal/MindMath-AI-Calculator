@@ -51,10 +51,23 @@ class _RecognitionScreenState extends State<RecognitionScreen> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => AIAssistantVisibilityCubit(),
-      child: BlocListener<SelectOperationCubit, String>(
-        listener: (context, state) {
-          result = numbers.join(state);
-        },
+      child: MultiBlocListener(
+        listeners: [
+          BlocListener<SelectOperationCubit, String>(
+            listener: (context, state) {
+              result = numbers.join(state);
+            },
+          ),
+          BlocListener<ImagePickBloc, ImagePickState>(
+            listener: (context, state) {
+              if (state is ImageProcessingErrorState) {
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(SnackBar(content: Text(state.message)));
+              }
+            },
+          ),
+        ],
         child: Scaffold(
           appBar: CustomAppBar(
             title: 'Review & Calculate',
@@ -79,7 +92,7 @@ class _RecognitionScreenState extends State<RecognitionScreen> {
                 if (state is ImagePickLoaded) {
                   numbers = state.numbers;
                   image = state.image;
-                  result = numbers.join(" $_selectedOperator ");
+                  result = numbers.join(" // ");
                 }
               },
               builder: (context, state) {
@@ -167,7 +180,7 @@ class _RecognitionScreenState extends State<RecognitionScreen> {
                                                     AIAssistantVisibilityCubit
                                                   >()
                                                   .toggle();
-                                              Navigator.pop(context);
+                                              // Navigator.pop(context);
                                               context.read<ImagePickBloc>().add(
                                                 ImageAiProcessingEvent(
                                                   image: image!,

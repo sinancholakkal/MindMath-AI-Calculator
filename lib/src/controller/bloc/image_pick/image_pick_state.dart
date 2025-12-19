@@ -17,3 +17,8 @@ class ImagePickError extends ImagePickState {
   final String message;
   ImagePickError({required this.message});
 }
+
+class ImageProcessingErrorState extends ImagePickState {
+  final String message;
+  ImageProcessingErrorState({required this.message});
+}
