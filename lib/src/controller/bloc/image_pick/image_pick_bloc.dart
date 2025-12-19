@@ -12,14 +12,16 @@ part 'image_pick_event.dart';
 part 'image_pick_state.dart';
 
 class ImagePickBloc extends Bloc<ImagePickEvent, ImagePickState> {
+  XFile? image;
+  List<num> numbers = [];
   ImagePickBloc() : super(ImagePickInitial()) {
     on<ImagePickerEvent>((event, emit) async {
       final ImagePicker picker = ImagePicker();
-      final XFile? image = await picker.pickImage(source: event.source);
-      final List<num> numbers = [];
+      image = await picker.pickImage(source: event.source);
+
       if (image != null) {
         emit(ImagePickLoading());
-        final InputImage inputImage = InputImage.fromFile(File(image.path));
+        final InputImage inputImage = InputImage.fromFile(File(image!.path));
 
         final textRecognizer = TextRecognizer(
           script: TextRecognitionScript.latin,
@@ -40,7 +42,7 @@ class ImagePickBloc extends Bloc<ImagePickEvent, ImagePickState> {
           }
         }
         print(numbers);
-        emit(ImagePickLoaded(image: image, numbers: numbers));
+        emit(ImagePickLoaded(image: image!, numbers: numbers));
       } else {
         emit(ImagePickError(message: "Image not selected"));
       }
@@ -80,6 +82,12 @@ class ImagePickBloc extends Bloc<ImagePickEvent, ImagePickState> {
         log("AI Saw: ${response.text}");
       } catch (e) {
         log(e.toString());
+        emit(
+          ImageProcessingErrorState(
+            message: "Failed to process image. Please try again later.",
+          ),
+        );
+        emit(ImagePickLoaded(image: event.image, numbers: numbers));
       }
     });
   }
