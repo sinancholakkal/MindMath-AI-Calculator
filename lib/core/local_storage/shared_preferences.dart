@@ -25,6 +25,6 @@ class LocalStorage {
     return _instance!;
   }
 
-  bool? getBool(String key) => _shared.getBool(key);
+  bool ? getBool(String key) => _shared.getBool(key);
   Future<bool> setBool(String key, bool value) => _shared.setBool(key, value);
 }
