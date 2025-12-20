@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
@@ -93,10 +94,12 @@ class _RecognitionScreenState extends State<RecognitionScreen> {
                   numbers = state.numbers;
                   image = state.image;
                   result = numbers.join(" // ");
+                  log("loaded");
                 }
               },
               builder: (context, state) {
                 if (state is ImagePickLoading) {
+                  log("loading");
                   return const AIAssistantView();
                 }
                 return Stack(
@@ -180,7 +183,7 @@ class _RecognitionScreenState extends State<RecognitionScreen> {
                                                     AIAssistantVisibilityCubit
                                                   >()
                                                   .toggle();
-                                              // Navigator.pop(context);
+                                              Navigator.pop(context);
                                               context.read<ImagePickBloc>().add(
                                                 ImageAiProcessingEvent(
                                                   image: image!,

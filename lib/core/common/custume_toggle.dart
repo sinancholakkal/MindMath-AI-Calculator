@@ -6,7 +6,13 @@ import 'package:mindmath_ai_calculator/core/common/scanner_button.dart';
 import '../../src/controller/cubit/toggile_cubit/toggle_cubit.dart';
 
 class CostumeToggle extends StatelessWidget {
-  const CostumeToggle({super.key});
+  final void Function() actionRight;
+  final void Function() actionLeft;
+  const CostumeToggle({
+    super.key,
+    required this.actionRight,
+    required this.actionLeft,
+  });
 
   final animationDuration = const Duration(milliseconds: 200);
 
@@ -75,7 +81,7 @@ class CostumeToggle extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 10),
-        ScannerButton(),
+        ScannerButton(actionLeft: actionLeft, actionRight: actionRight),
       ],
     );
   }

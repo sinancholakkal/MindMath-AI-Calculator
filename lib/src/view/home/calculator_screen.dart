@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mindmath_ai_calculator/src/controller/bloc/arithmetical/arithmetical_bloc.dart';
 import 'package:mindmath_ai_calculator/src/controller/bloc/image_pick/image_pick_bloc.dart';
 import 'package:mindmath_ai_calculator/src/view/home/widgets/calc_button.dart';
@@ -42,10 +43,10 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     return BlocListener<ImagePickBloc, ImagePickState>(
       listener: (context, state) async {
         if (state is ImagePickLoading) {
-          mainInputController.text = await Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => RecognitionScreen()),
-          );
+          // mainInputController.text = await Navigator.push(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => RecognitionScreen()),
+          // );
         }
       },
       child: Scaffold(
@@ -57,7 +58,20 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
             ),
             child: Column(
               children: [
-                CostumeToggle(),
+                CostumeToggle(
+                  actionLeft: () {
+                    context.read<ImagePickBloc>().add(
+                      ImagePickerEvent(source: ImageSource.camera),
+                    );
+                    Navigator.pop(context);
+                  },
+                  actionRight: () {
+                    context.read<ImagePickBloc>().add(
+                      ImagePickerEvent(source: ImageSource.gallery),
+                    );
+                    Navigator.pop(context);
+                  },
+                ),
                 Expanded(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
