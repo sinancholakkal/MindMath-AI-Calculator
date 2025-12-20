@@ -1,22 +1,11 @@
-import 'dart:developer';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:mindmath_ai_calculator/core/local_storage/shared_preferences.dart';
 
 class ToggleCubit extends Cubit<bool> {
-  ToggleCubit() : super(false) {
-   init ();
-  }
+  ToggleCubit(super.initialState);
 
   void toggle() async {
     emit(!state);
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool("isDark", state);
-    log(prefs.getBool("isDark").toString());
-  }
-
-  void init() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    emit(prefs.getBool("isDark") ?? true);
+    LocalStorage.instance.setBool("isDark", state);
   }
 }
