@@ -49,6 +49,14 @@ class _RecognitionScreenState extends State<RecognitionScreen> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    result = "";
+    numbers.clear();
+    image = null;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => AIAssistantVisibilityCubit(),
@@ -93,7 +101,7 @@ class _RecognitionScreenState extends State<RecognitionScreen> {
                 if (state is ImagePickLoaded) {
                   numbers = state.numbers;
                   image = state.image;
-                  result = numbers.join(" // ");
+                  result = numbers.join(_selectedOperator);
                   log("loaded");
                 }
               },
