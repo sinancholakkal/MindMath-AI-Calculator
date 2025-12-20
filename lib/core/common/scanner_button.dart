@@ -9,13 +9,7 @@ import 'package:mindmath_ai_calculator/core/common/custome_options.dart';
 import '../images/const_images.dart';
 
 class ScannerButton extends StatelessWidget {
-  final void Function() actionRight;
-  final void Function() actionLeft;
-  const ScannerButton({
-    super.key,
-    required this.actionRight,
-    required this.actionLeft,
-  });
+  const ScannerButton({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -40,12 +34,22 @@ class ScannerButton extends StatelessWidget {
                   context: context,
                   screenHeight: MediaQuery.of(context).size.height,
                   screenWidth: MediaQuery.of(context).size.width,
-                  actionLeft: actionLeft,
+                  actionLeft: () {
+                    context.read<ImagePickBloc>().add(
+                      ImagePickerEvent(source: ImageSource.camera),
+                    );
+                    Navigator.pop(context);
+                  },
                   lottieLeft: takePhoto,
                   textLeft: 'Open Camera',
                   lottieRight: gallery,
                   textRight: 'Image from Gallery',
-                  actionRight: actionRight,
+                  actionRight: () {
+                    context.read<ImagePickBloc>().add(
+                      ImagePickerEvent(source: ImageSource.gallery),
+                    );
+                    Navigator.pop(context);
+                  },
                   currentTheme: isEnabled,
                 );
               },

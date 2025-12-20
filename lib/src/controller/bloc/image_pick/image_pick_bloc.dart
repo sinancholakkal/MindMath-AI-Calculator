@@ -20,6 +20,7 @@ class ImagePickBloc extends Bloc<ImagePickEvent, ImagePickState> {
       image = await picker.pickImage(source: event.source);
 
       if (image != null) {
+        emit(ImagePickAndNavigateState());
         emit(ImagePickLoading());
         final InputImage inputImage = InputImage.fromFile(File(image!.path));
 
