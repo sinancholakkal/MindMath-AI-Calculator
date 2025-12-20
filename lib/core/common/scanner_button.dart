@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -29,8 +28,9 @@ class ScannerButton extends StatelessWidget {
             child: IconButton(
               onPressed: () {
                 BottomSheetOptions().showBottomSheet(
-                  mainText:  "Choose Your Image Recognition Method" ,
-                  subText: 'After choosing, follow the on‑screen steps to complete your Image Recognition.',
+                  mainText: "Choose Your Image Recognition Method",
+                  subText:
+                      'After choosing, follow the on‑screen steps to complete your Image Recognition.',
                   context: context,
                   screenHeight: MediaQuery.of(context).size.height,
                   screenWidth: MediaQuery.of(context).size.width,

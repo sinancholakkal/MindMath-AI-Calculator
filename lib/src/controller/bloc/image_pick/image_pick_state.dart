@@ -7,6 +7,8 @@ final class ImagePickInitial extends ImagePickState {}
 
 class ImagePickLoading extends ImagePickState {}
 
+class ImagePickAndNavigateState extends ImagePickState {}
+
 class ImagePickLoaded extends ImagePickState {
   final XFile image;
   final List<num> numbers;
