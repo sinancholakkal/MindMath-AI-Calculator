@@ -24,9 +24,10 @@ class ScannerButton extends StatelessWidget {
                 : AppPalette.hint,
             borderRadius: .circular(40),
           ),
-          child: Center(
-            child: IconButton(
-              onPressed: () {
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () {
                 BottomSheetOptions().showBottomSheet(
                   mainText: "Choose Your Image Recognition Method",
                   subText:
@@ -53,10 +54,13 @@ class ScannerButton extends StatelessWidget {
                   currentTheme: isEnabled,
                 );
               },
-              icon: Icon(
-                Icons.document_scanner,
-                size: 18,
-                color: isEnabled ? AppPalette.white : AppPalette.black2,
+              borderRadius: BorderRadius.circular(40),
+              child: Center(
+                child: Icon(
+                  Icons.document_scanner,
+                  size: 19,
+                  color: isEnabled ? AppPalette.white : AppPalette.black2,
+                ),
               ),
             ),
           ),

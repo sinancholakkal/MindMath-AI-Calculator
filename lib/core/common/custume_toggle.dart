@@ -8,7 +8,7 @@ import '../../src/controller/cubit/toggile_cubit/toggle_cubit.dart';
 class CostumeToggle extends StatelessWidget {
   const CostumeToggle({super.key});
 
-  final animationDuration = const Duration(milliseconds: 200);
+  final animationDuration = const Duration(milliseconds: 150);
 
   @override
   Widget build(BuildContext context) {
@@ -37,14 +37,14 @@ class CostumeToggle extends StatelessWidget {
                   children: [
                     Row(
                       mainAxisAlignment: .center,
-                      children: const [
-                        Padding(
+                      children: [
+                         Padding(
                           padding: .only(left: 10),
-                          child: Icon(Icons.dark_mode, size: 20),
+                          child: Icon(Icons.dark_mode, size: 20, color: isEnabled ? AppPalette.white:AppPalette.hint),
                         ),
                         Padding(
-                          padding: .only(right: 9),
-                          child: Icon(Icons.light_mode, size: 20),
+                          padding: const .only(right: 9),
+                          child: Icon(Icons.light_mode, size: 20, color: isEnabled ? AppPalette.black2.withValues(alpha: 0.6): AppPalette.black2),
                         ),
                       ],
                     ),
