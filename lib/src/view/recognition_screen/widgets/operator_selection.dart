@@ -16,14 +16,23 @@ class OperatorSelection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          "Select Operation",
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            decoration: TextDecoration.underline,
-          ),
-          textAlign: TextAlign.start,
+        Row(
+          children: [
+            Icon(
+              Icons.calculate_outlined,
+              size: 16,
+              color: AppPalette.blue.withValues(alpha: 0.8),
+            ),
+            width(context: context, width: 0.01),
+            Text(
+              "SELECT OPERATOR",
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+                decoration: TextDecoration.underline,
+              ),
+            ),
+          ],
         ),
         hight(ctx: context, height: 0.01),
         BlocBuilder<SelectOperationCubit, String>(
