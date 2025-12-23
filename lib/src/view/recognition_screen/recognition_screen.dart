@@ -1,8 +1,6 @@
 import 'dart:developer';
-import 'dart:ui';
-
+import 'package:flutter_swipe_button/flutter_swipe_button.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:glass_fish_button/glass_fish_button.dart';
@@ -24,13 +22,7 @@ import 'package:mindmath_ai_calculator/src/view/recognition_screen/widgets/opera
 import 'package:mindmath_ai_calculator/src/view/recognition_screen/widgets/preview_section.dart';
 
 class RecognitionScreen extends StatefulWidget {
-  // final XFile image;
-  // final List<num> numbers;
-  const RecognitionScreen({
-    super.key,
-    // required this.image,
-    // required this.numbers,
-  });
+  const RecognitionScreen({super.key});
 
   @override
   State<RecognitionScreen> createState() => _RecognitionScreenState();
@@ -42,7 +34,6 @@ class _RecognitionScreenState extends State<RecognitionScreen> {
   String result = "";
   List<num> numbers = [];
   XFile? image;
-
   @override
   void initState() {
     super.initState();
@@ -213,39 +204,6 @@ class _RecognitionScreenState extends State<RecognitionScreen> {
                                 hight(ctx: context, height: 0.025),
                                 PreviewSection(numbers: numbers),
                                 hight(ctx: context, height: 0.03),
-                                BlocBuilder<ToggleCubit, bool>(
-                                  builder: (context, isEnable) {
-                                    return RichText(
-                                      text: TextSpan(
-                                        children: [
-                                          TextSpan(
-                                            text: "Generate Result? ",
-                                            style: TextStyle(
-                                              color: isEnable
-                                                  ? AppPalette.white
-                                                  : AppPalette.black,
-                                              fontSize: 15,
-                                            ),
-                                          ),
-                                          TextSpan(
-                                            text: "Tab to Result",
-                                            style: const TextStyle(
-                                              color: AppPalette.blue,
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold,
-                                              decoration:
-                                                  TextDecoration.underline,
-                                            ),
-                                            recognizer: TapGestureRecognizer()
-                                              ..onTap = () {
-                                                Navigator.pop(context, result);
-                                              },
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                ),
                               ],
                             ),
                           ),
@@ -253,6 +211,33 @@ class _RecognitionScreenState extends State<RecognitionScreen> {
                       ],
                     ),
                   ],
+                );
+              },
+            ),
+          ),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerFloat,
+          floatingActionButton: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+            child: BlocBuilder<ToggleCubit, bool>(
+              builder: (context, state) {
+                return SwipeButton(
+                  enabled: true,
+                  thumb:  Icon(
+                    Icons.arrow_forward,
+                    color: state ? AppPalette.black : AppPalette.white
+                  ),
+                  inactiveThumbColor: AppPalette.blue,
+                  inactiveTrackColor: AppPalette.blue,
+                  activeThumbColor: Colors.blue,
+                  activeTrackColor: Colors.blue.shade100,
+                  child:  Text(
+                    "Swipe to Generate Result?",
+                    style: TextStyle(fontSize: 16, color: state ? AppPalette.black : AppPalette.white),
+                  ),
+                  onSwipe: () {
+                    Navigator.pop(context, result);
+                  },
                 );
               },
             ),

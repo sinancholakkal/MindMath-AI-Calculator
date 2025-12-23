@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mindmath_ai_calculator/core/common/custome_lotties.dart';
 import 'package:mindmath_ai_calculator/core/images/const_images.dart';
-import 'package:mindmath_ai_calculator/src/view/recognition_screen/recognition_screen.dart';
 import 'package:photo_view/photo_view.dart';
 
 class ImageSection extends StatelessWidget {
